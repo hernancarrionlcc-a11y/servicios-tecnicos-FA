@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FA Insumos - Sistema Técnico</title>
+    <title>FA Insumos y Servicios - Sistema Técnico</title>
     <style>
         body { font-family: sans-serif; background: #eef2f5; padding: 20px; color: #333; max-width: 600px; margin: auto; }
         .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;}
@@ -44,10 +44,14 @@
         </div>
         <input type="text" id="clave" placeholder="Clave / Patrón (o 'Ninguna')">
         <textarea id="falla" placeholder="Falla / Observaciones..."></textarea>
+        
+        <label>Accesorios que deja el cliente</label>
         <div class="row">
             <div class="col"><small>Cargador</small><select id="cableCorriente"><option value="NO">NO</option><option value="SI">SÍ</option></select></div>
             <div class="col"><small>Cable USB</small><select id="cableDatos"><option value="NO">NO</option><option value="SI">SÍ</option></select></div>
         </div>
+        <input type="text" id="otroAccesorio" placeholder="Otros accesorios (Funda, chip, cartuchos...)">
+        
         <button id="btnIngresar" onclick="ejecutarAccion('ingresar')">Registrar Ingreso</button>
         <div id="mensajeIngreso" class="status-box"></div>
     </div>
@@ -111,12 +115,10 @@
         }
 
         function abrirWhatsApp(telefono, cliente, equipo, estado, saldo) {
-            // Limpia el número (quita espacios, guiones, etc)
             let numeroLimpio = telefono.replace(/\D/g,'');
-            // Si el número no arranca con 549, se lo agregamos por defecto (formato Argentina)
             if (!numeroLimpio.startsWith("549")) numeroLimpio = "549" + numeroLimpio;
             
-            let texto = `Hola ${cliente}! Te escribimos del Servicio Técnico. Te avisamos que tu equipo (${equipo}) se encuentra en estado: *${estado}*.`;
+            let texto = `Hola ${cliente}! Te escribimos de FA Insumos & Servicios. Te avisamos que tu equipo (${equipo}) se encuentra en estado: *${estado}*.`;
             if (saldo > 0) texto += ` El saldo a abonar es de $${saldo}.`;
             texto += ` ¡Cualquier consulta estamos a disposición!`;
             
@@ -141,6 +143,10 @@
                 datos.falla = document.getElementById('falla').value;
                 datos.cableCorriente = document.getElementById('cableCorriente').value;
                 datos.cableDatos = document.getElementById('cableDatos').value;
+                
+                // Acá capturamos el valor del nuevo campo
+                datos.otroAccesorio = document.getElementById('otroAccesorio').value || "Ninguno";
+                
                 if(!datos.cliente || !datos.telefono) { alert("Nombre y teléfono obligatorios."); btn.disabled = false; btn.innerText = textoOriginal; return; }
             } 
             else if (tipo === 'actualizar') {
@@ -176,6 +182,8 @@
                     caja.style.display = 'block'; caja.style.background = '#d4edda';
                     caja.innerHTML = `✅ ¡Ingresado!<br><span class="nro-destacado">Nº ${res.nroAsignado}</span>`;
                     document.querySelectorAll('input[type="text"], input[type="tel"], textarea').forEach(el => el.value = '');
+                    document.getElementById('cableCorriente').value = "NO";
+                    document.getElementById('cableDatos').value = "NO";
                 } else if (tipo === 'actualizar' || tipo === 'presupuestar') {
                     alert(res.mensaje);
                     document.querySelectorAll('input[type="number"], textarea').forEach(el => el.value = '');
