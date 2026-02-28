@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FA Insumos y Servicios - Sistema Técnico</title>
+    <title>FA Insumos - Sistema Técnico</title>
     <style>
         body { font-family: sans-serif; background: #eef2f5; padding: 20px; color: #333; max-width: 600px; margin: auto; }
         .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;}
@@ -24,12 +24,35 @@
         .nro-destacado { font-size: 28px; color: #c0392b; display: block; margin-top: 10px; text-align: center; font-weight: bold;}
         .historial-texto { white-space: pre-wrap; background: #2c3e50; color: #ecf0f1; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 13px; margin-top: 10px;}
         .finanzas-box { background: #e8f8f5; border: 1px solid #1abc9c; padding: 10px; margin-top: 10px; border-radius: 5px; }
+        
+        @media print {
+            body * { visibility: hidden; }
+            #ticketImpresion, #ticketImpresion * { visibility: visible; }
+            #ticketImpresion { position: absolute; left: 0; top: 0; width: 100%; max-width: 80mm; padding: 10px; font-family: monospace; font-size: 14px; background: white;}
+            .card, button, input, select, textarea { display: none !important; }
+        }
     </style>
 </head>
 <body>
 
+    <div id="ticketImpresion" style="display: none;">
+        <div style="text-align: center; border-bottom: 2px dashed black; padding-bottom: 10px; margin-bottom: 10px;">
+            <h2 style="margin: 0; font-size: 18px;">FA INSUMOS & SERVICIOS</h2>
+            <p style="margin: 5px 0;">Comprobante de Ingreso</p>
+        </div>
+        <p style="margin: 5px 0;"><strong>Fecha:</strong> <span id="tFecha"></span></p>
+        <p style="margin: 5px 0;"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 18px; font-weight: bold;"></span></p>
+        <p style="margin: 5px 0;"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
+        <p style="margin: 5px 0;"><strong>Falla / Obs:</strong> <span id="tFalla"></span></p>
+        <hr style="border-top: 1px dashed black; margin: 10px 0;">
+        <p style="margin: 5px 0;"><strong>Presupuesto:</strong><br><pre id="tDetalle" style="font-family: monospace; font-size: 13px; margin: 5px 0; white-space: pre-wrap;"></pre></p>
+        <p style="margin: 5px 0;"><strong>Total:</strong> $<span id="tTotal"></span></p>
+        <p style="margin: 5px 0;"><strong>Seña:</strong> $<span id="tSena"></span></p>
+        <p style="text-align: center; margin-top: 20px; border-top: 2px dashed black; padding-top: 10px;">¡Gracias por confiar en nosotros!</p>
+    </div>
+
     <div class="card">
-        <h2>📝 Nuevo Ingreso</h2>
+        <h2>📝 Nuevo Ingreso & Presupuesto</h2>
         <div class="row">
             <input type="text" id="cliente" class="col" placeholder="Nombre y Apellido" required>
             <input type="tel" id="telefono" class="col" placeholder="Teléfono (Ej: 264...)" required>
@@ -52,13 +75,26 @@
         </div>
         <input type="text" id="otroAccesorio" placeholder="Otros accesorios (Funda, chip, cartuchos...)">
         
-        <button id="btnIngresar" onclick="ejecutarAccion('ingresar')">Registrar Ingreso</button>
+        <label style="color: #8e44ad; border-top: 1px solid #ccc; padding-top: 15px; margin-top: 15px;">💰 Cotización Inicial (Opcional)</label>
+        <div id="contenedorItems">
+            <div class="row item-cotizacion">
+                <input type="text" class="col desc" placeholder="Ej: Revisión Técnica / Cambio SSD">
+                <input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()">
+            </div>
+        </div>
+        <button class="btn-add" onclick="agregarItem()">+ Añadir otro ítem</button>
+        <div class="row" style="margin-top: 15px;">
+            <div class="col"><label>Total ($)</label><input type="number" id="presTotal" readonly style="background: #eee; font-weight: bold;"></div>
+            <div class="col"><label>Seña ($)</label><input type="number" id="presSena" value="0"></div>
+        </div>
+
+        <button id="btnIngresar" onclick="ejecutarAccion('ingresar')">Registrar Ingreso e Imprimir</button>
         <div id="mensajeIngreso" class="status-box"></div>
     </div>
 
     <div class="card">
         <h2>⚙️ Actualizar Estado</h2>
-        <input type="number" id="actNro" placeholder="Nro de Reparación">
+        <input type="text" id="actNro" placeholder="Nro de Reparación (Ej: 1 o 0001)">
         <select id="actEstado">
             <option value="En Revisión">En Revisión</option>
             <option value="Esperando Repuesto">Esperando Repuesto</option>
@@ -71,34 +107,16 @@
     </div>
 
     <div class="card">
-        <h2>💰 Cargar Presupuesto</h2>
-        <input type="number" id="presNro" placeholder="Nro de Reparación">
-        <label>Detalle de Cotización</label>
-        <div id="contenedorItems">
-            <div class="row item-cotizacion">
-                <input type="text" class="col desc" placeholder="Ej: Disco SSD">
-                <input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()">
-            </div>
-        </div>
-        <button class="btn-add" onclick="agregarItem()">+ Añadir otro ítem</button>
-        <div class="row" style="margin-top: 15px;">
-            <div class="col"><label>Total ($)</label><input type="number" id="presTotal" readonly style="background: #eee; font-weight: bold;"></div>
-            <div class="col"><label>Seña ($)</label><input type="number" id="presSena" value="0"></div>
-        </div>
-        <button id="btnPresupuesto" class="btn-update" style="background:#8e44ad;" onclick="ejecutarAccion('presupuestar')">Guardar Cotización</button>
-    </div>
-
-    <div class="card">
         <h2>🔍 Consultar Servicio</h2>
         <div class="row">
-            <input type="number" id="consNro" class="col" placeholder="Nro de Reparación">
+            <input type="text" id="consNro" class="col" placeholder="Nro de Reparación o Nombre">
             <button id="btnConsultar" class="col btn-search" style="margin-top: 5px;" onclick="ejecutarAccion('consultar')">Buscar</button>
         </div>
         <div id="mensajeConsulta" class="status-box"></div>
     </div>
 
     <script>
-        // ¡REEMPLAZAR CON TU URL!
+        // ¡REEMPLAZAR CON TU URL DEFINITIVA!
         const URL_API = "https://script.google.com/macros/s/AKfycbx205tJR-sW11Z1gzkwu1Ln_vcZSAmqstEwfMKteXAeTf35nHsOncciqOEqtLEAu-01/exec"; 
 
         function agregarItem() {
@@ -117,17 +135,14 @@
         function abrirWhatsApp(telefono, cliente, equipo, estado, saldo) {
             let numeroLimpio = telefono.replace(/\D/g,'');
             if (!numeroLimpio.startsWith("549")) numeroLimpio = "549" + numeroLimpio;
-            
             let texto = `Hola ${cliente}! Te escribimos de FA Insumos & Servicios. Te avisamos que tu equipo (${equipo}) se encuentra en estado: *${estado}*.`;
             if (saldo > 0) texto += ` El saldo a abonar es de $${saldo}.`;
             texto += ` ¡Cualquier consulta estamos a disposición!`;
-            
-            let url = `https://wa.me/${numeroLimpio}?text=${encodeURIComponent(texto)}`;
-            window.open(url, '_blank');
+            window.open(`https://wa.me/${numeroLimpio}?text=${encodeURIComponent(texto)}`, '_blank');
         }
 
         async function ejecutarAccion(tipo) {
-            let idBoton = tipo === 'ingresar' ? 'btnIngresar' : (tipo === 'actualizar' ? 'btnActualizar' : (tipo === 'presupuestar' ? 'btnPresupuesto' : 'btnConsultar'));
+            let idBoton = tipo === 'ingresar' ? 'btnIngresar' : (tipo === 'actualizar' ? 'btnActualizar' : 'btnConsultar');
             const btn = document.getElementById(idBoton);
             const textoOriginal = btn.innerText;
             btn.disabled = true; btn.innerText = "Procesando...";
@@ -140,13 +155,20 @@
                 datos.tipoEquipo = document.getElementById('tipoEquipo').value;
                 datos.modelo = document.getElementById('modelo').value;
                 datos.clave = document.getElementById('clave').value || "Ninguna";
-                datos.falla = document.getElementById('falla').value;
+                datos.falla = document.getElementById('falla').value || "Sin observaciones";
                 datos.cableCorriente = document.getElementById('cableCorriente').value;
                 datos.cableDatos = document.getElementById('cableDatos').value;
-                
-                // Acá capturamos el valor del nuevo campo
                 datos.otroAccesorio = document.getElementById('otroAccesorio').value || "Ninguno";
                 
+                datos.total = document.getElementById('presTotal').value || 0;
+                datos.sena = document.getElementById('presSena').value || 0;
+                let detalleStr = "";
+                document.querySelectorAll('.item-cotizacion').forEach(item => {
+                    let desc = item.querySelector('.desc').value; let prec = item.querySelector('.precio').value;
+                    if(desc && prec) detalleStr += `- ${desc}: $${prec}\n`;
+                });
+                datos.detalle = detalleStr || "Sin cotizar";
+
                 if(!datos.cliente || !datos.telefono) { alert("Nombre y teléfono obligatorios."); btn.disabled = false; btn.innerText = textoOriginal; return; }
             } 
             else if (tipo === 'actualizar') {
@@ -155,21 +177,9 @@
                 datos.nota = document.getElementById('actNota').value;
                 if(!datos.id) { alert("Ingresa Nro."); btn.disabled = false; btn.innerText = textoOriginal; return; }
             } 
-            else if (tipo === 'presupuestar') {
-                datos.id = document.getElementById('presNro').value;
-                datos.total = document.getElementById('presTotal').value || 0;
-                datos.sena = document.getElementById('presSena').value || 0;
-                let detalleStr = "";
-                document.querySelectorAll('.item-cotizacion').forEach(item => {
-                    let desc = item.querySelector('.desc').value; let prec = item.querySelector('.precio').value;
-                    if(desc && prec) detalleStr += `- ${desc}: $${prec}\n`;
-                });
-                datos.detalle = detalleStr || "Sin detalle";
-                if(!datos.id) { alert("Ingresa Nro."); btn.disabled = false; btn.innerText = textoOriginal; return; }
-            }
             else if (tipo === 'consultar') {
                 datos.id = document.getElementById('consNro').value;
-                if(!datos.id) { alert("Ingresa Nro."); btn.disabled = false; btn.innerText = textoOriginal; return; }
+                if(!datos.id) { alert("Ingresa Nro o Nombre."); btn.disabled = false; btn.innerText = textoOriginal; return; }
             }
 
             try {
@@ -178,15 +188,33 @@
                 
                 if (res.error) alert(res.error);
                 else if (tipo === 'ingresar') {
+                    document.getElementById('tFecha').innerText = res.fecha;
+                    document.getElementById('tNro').innerText = res.nroAsignado;
+                    document.getElementById('tEquipo').innerText = datos.tipoEquipo + " " + datos.modelo;
+                    document.getElementById('tFalla').innerText = datos.falla;
+                    document.getElementById('tDetalle').innerText = datos.detalle;
+                    document.getElementById('tTotal').innerText = datos.total;
+                    document.getElementById('tSena').innerText = datos.sena;
+                    
                     const caja = document.getElementById('mensajeIngreso');
                     caja.style.display = 'block'; caja.style.background = '#d4edda';
                     caja.innerHTML = `✅ ¡Ingresado!<br><span class="nro-destacado">Nº ${res.nroAsignado}</span>`;
+                    
+                    document.getElementById('ticketImpresion').style.display = 'block';
+                    window.print();
+                    document.getElementById('ticketImpresion').style.display = 'none';
+
                     document.querySelectorAll('input[type="text"], input[type="tel"], textarea').forEach(el => el.value = '');
+                    document.querySelectorAll('.item-cotizacion').forEach((el, index) => { if(index > 0) el.remove(); });
+                    document.getElementById('presTotal').value = '';
+                    document.getElementById('presSena').value = '0';
                     document.getElementById('cableCorriente').value = "NO";
                     document.getElementById('cableDatos').value = "NO";
-                } else if (tipo === 'actualizar' || tipo === 'presupuestar') {
+
+                } else if (tipo === 'actualizar') {
                     alert(res.mensaje);
-                    document.querySelectorAll('input[type="number"], textarea').forEach(el => el.value = '');
+                    document.getElementById('actNro').value = '';
+                    document.getElementById('actNota').value = '';
                 } else if (tipo === 'consultar') {
                     const caja = document.getElementById('mensajeConsulta');
                     caja.style.display = 'block';
@@ -200,7 +228,16 @@
                             <b style="color:#c0392b; font-size:16px;">Restante a Pagar: $${saldo}</b></div>`;
                     }
 
+                    // Lógica para mostrar la etiqueta si el equipo es un historial viejo ("Entregado")
+                    let badgeArchivado = res.estado === "Entregado" 
+                        ? `<div style="background:#f39c12; color:white; padding:5px; text-align:center; font-size:12px; margin-bottom:10px; border-radius:3px; font-weight:bold;">⚠️ ESTE EQUIPO YA FUE ENTREGADO AL CLIENTE</div>` 
+                        : ``;
+
                     caja.innerHTML = `
+                        ${badgeArchivado}
+                        <div style="background: #34495e; color: white; padding: 5px; text-align: center; border-radius: 3px; margin-bottom: 10px;">
+                            <b>REPARACIÓN Nº ${res.nroAsignado}</b>
+                        </div>
                         <b>Cliente:</b> ${res.cliente} <br>
                         <b>Equipo:</b> ${res.equipo} <br>
                         <b>Estado Actual:</b> <span style="color:#d32f2f; font-weight:bold;">${res.estado}</span> <br>
