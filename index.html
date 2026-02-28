@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FA Insumos - Sistema Técnico</title>
+    <title>FA Insumos & Servicios</title>
+    <link rel="icon" href="LOGO FA .png" type="image/png">
     <style>
         body { font-family: sans-serif; background: #eef2f5; padding: 20px; color: #333; max-width: 600px; margin: auto; }
         .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;}
@@ -19,36 +20,56 @@
         .btn-search { background: #27ae60; } .btn-search:hover { background: #219150; }
         .btn-add { background: #95a5a6; padding: 8px; font-size: 14px; margin-top: 5px; }
         .btn-del { background: #e74c3c; width: auto; padding: 10px 15px; margin-top: 5px;}
-        .btn-wsp { background: #25D366; color: white; margin-top: 15px; } .btn-wsp:hover { background: #1ebe5d; }
         .status-box { padding: 15px; border-radius: 5px; font-size: 15px; display: none; margin-top: 20px; background: #f8f9fa; border: 1px solid #ddd; }
         .nro-destacado { font-size: 28px; color: #c0392b; display: block; margin-top: 10px; text-align: center; font-weight: bold;}
         .historial-texto { white-space: pre-wrap; background: #2c3e50; color: #ecf0f1; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 13px; margin-top: 10px;}
         .finanzas-box { background: #e8f8f5; border: 1px solid #1abc9c; padding: 10px; margin-top: 10px; border-radius: 5px; }
         
+        /* ESTILOS DEL PATRÓN DE DESBLOQUEO */
+        .pattern-container { text-align: center; margin-top: 10px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
+        canvas { background: white; border-radius: 10px; touch-action: none; box-shadow: inset 0 0 5px rgba(0,0,0,0.1); cursor: crosshair; }
+        .btn-clear-pattern { background: #e74c3c; padding: 8px; font-size: 14px; margin-top: 10px; width: auto; display: inline-block; }
+
+        /* ESTILOS EXCLUSIVOS PARA LA IMPRESORA (TAMAÑO A6) */
         @media print {
+            @page { 
+                size: A6 portrait; 
+                margin: 0; 
+            }
+            body { margin: 0; padding: 0; background: white; }
             body * { visibility: hidden; }
             #ticketImpresion, #ticketImpresion * { visibility: visible; }
-            #ticketImpresion { position: absolute; left: 0; top: 0; width: 100%; max-width: 80mm; padding: 10px; font-family: monospace; font-size: 14px; background: white;}
-            .card, button, input, select, textarea { display: none !important; }
+            #ticketImpresion { 
+                position: absolute; left: 0; top: 0; width: 100%; height: 100%; max-width: none;
+                padding: 12mm; box-sizing: border-box; font-family: sans-serif; font-size: 14px; background: white;
+            }
+            .card, button, input, select, textarea, .pattern-container { display: none !important; }
         }
     </style>
 </head>
 <body>
 
     <div id="ticketImpresion" style="display: none;">
-        <div style="text-align: center; border-bottom: 2px dashed black; padding-bottom: 10px; margin-bottom: 10px;">
+        <div style="text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 10px;">
+            <img src="LOGO FA .png" style="max-width: 140px; margin-bottom: 5px;"> 
             <h2 style="margin: 0; font-size: 18px;">FA INSUMOS & SERVICIOS</h2>
-            <p style="margin: 5px 0;">Comprobante de Ingreso</p>
+            <p style="margin: 2px 0; font-size: 12px;">📞 WhatsApp: 264-567-4349</p> 
+            <p style="margin: 2px 0; font-size: 12px;">📍 Ignacio de la Roza 110 (S), Va San Martín,Albardón, San Juan</p>
+            <p style="margin: 10px 0 5px 0; font-weight: bold; font-size: 15px; text-transform: uppercase;">Comprobante de Ingreso</p>
         </div>
         <p style="margin: 5px 0;"><strong>Fecha:</strong> <span id="tFecha"></span></p>
         <p style="margin: 5px 0;"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 18px; font-weight: bold;"></span></p>
+        <p style="margin: 5px 0;"><strong>Cliente:</strong> <span id="tCliente"></span></p>
         <p style="margin: 5px 0;"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
         <p style="margin: 5px 0;"><strong>Falla / Obs:</strong> <span id="tFalla"></span></p>
-        <hr style="border-top: 1px dashed black; margin: 10px 0;">
-        <p style="margin: 5px 0;"><strong>Presupuesto:</strong><br><pre id="tDetalle" style="font-family: monospace; font-size: 13px; margin: 5px 0; white-space: pre-wrap;"></pre></p>
-        <p style="margin: 5px 0;"><strong>Total:</strong> $<span id="tTotal"></span></p>
-        <p style="margin: 5px 0;"><strong>Seña:</strong> $<span id="tSena"></span></p>
-        <p style="text-align: center; margin-top: 20px; border-top: 2px dashed black; padding-top: 10px;">¡Gracias por confiar en nosotros!</p>
+        <hr style="border-top: 1px dashed #333; margin: 10px 0;">
+        <p style="margin: 5px 0;"><strong>Presupuesto / Tareas:</strong><br><pre id="tDetalle" style="font-family: sans-serif; font-size: 13px; margin: 5px 0; white-space: pre-wrap;"></pre></p>
+        <div style="border-top: 1px solid #333; padding-top: 5px; margin-top: 10px;">
+            <p style="margin: 5px 0;"><strong>Total:</strong> $<span id="tTotal"></span></p>
+            <p style="margin: 5px 0;"><strong>Seña:</strong> $<span id="tSena"></span></p>
+            <p style="margin: 5px 0; font-weight: bold; font-size: 16px;"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
+        </div>
+        <p style="text-align: center; margin-top: 20px; font-size: 12px; font-style: italic;">¡Gracias por confiar en nosotros!</p>
     </div>
 
     <div class="card">
@@ -65,8 +86,18 @@
             </select>
             <input type="text" id="modelo" class="col" placeholder="Marca / Modelo">
         </div>
-        <input type="text" id="clave" placeholder="Clave / Patrón (o 'Ninguna')">
-        <textarea id="falla" placeholder="Falla / Observaciones..."></textarea>
+        
+        <label>Seguridad del Equipo</label>
+        <input type="text" id="clave" placeholder="Contraseña escrita (o dibujá el patrón abajo)">
+        
+        <div class="pattern-container">
+            <small style="color:#7f8c8d; display:block; margin-bottom:5px;">Dibujá el patrón si es necesario (1 al 9)</small>
+            <canvas id="patternCanvas" width="200" height="200"></canvas>
+            <br>
+            <button class="btn-clear-pattern" onclick="limpiarPatron()">Borrar Patrón</button>
+        </div>
+
+        <textarea id="falla" placeholder="Falla / Observaciones..." style="margin-top:15px;"></textarea>
         
         <label>Accesorios que deja el cliente</label>
         <div class="row">
@@ -85,7 +116,7 @@
         <button class="btn-add" onclick="agregarItem()">+ Añadir otro ítem</button>
         <div class="row" style="margin-top: 15px;">
             <div class="col"><label>Total ($)</label><input type="number" id="presTotal" readonly style="background: #eee; font-weight: bold;"></div>
-            <div class="col"><label>Seña ($)</label><input type="number" id="presSena" value="0"></div>
+            <div class="col"><label>Seña ($)</label><input type="number" id="presSena" value="0" onkeyup="calcularTotal()"></div>
         </div>
 
         <button id="btnIngresar" onclick="ejecutarAccion('ingresar')">Registrar Ingreso e Imprimir</button>
@@ -116,12 +147,65 @@
     </div>
 
     <script>
-        // ¡REEMPLAZAR CON TU URL DEFINITIVA!
+        // LÓGICA DEL PATRÓN DE DESBLOQUEO
+        const canvas = document.getElementById('patternCanvas');
+        const ctx = canvas.getContext('2d');
+        const inputClave = document.getElementById('clave');
+        
+        let points = []; let path = []; let isDrawing = false; let currentX, currentY;
+
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                points.push({ x: 40 + col * 60, y: 40 + row * 60, id: row * 3 + col + 1 });
+            }
+        }
+
+        function drawPattern() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            points.forEach(p => {
+                ctx.beginPath(); ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                ctx.fillStyle = path.includes(p.id) ? '#3498db' : '#bdc3c7'; ctx.fill();
+            });
+            if (path.length > 0) {
+                ctx.beginPath(); ctx.strokeStyle = '#3498db'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                const first = points.find(p => p.id === path[0]); ctx.moveTo(first.x, first.y);
+                for (let i = 1; i < path.length; i++) {
+                    const pt = points.find(p => p.id === path[i]); ctx.lineTo(pt.x, pt.y);
+                }
+                if (isDrawing) ctx.lineTo(currentX, currentY); ctx.stroke();
+            }
+        }
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function startDraw(e) { e.preventDefault(); isDrawing = true; path = []; inputClave.value = ""; moveDraw(e); }
+        function moveDraw(e) {
+            if (!isDrawing) return; e.preventDefault(); const pos = getPos(e); currentX = pos.x; currentY = pos.y;
+            points.forEach(p => {
+                if (!path.includes(p.id)) {
+                    if (Math.hypot(p.x - currentX, p.y - currentY) < 20) path.push(p.id);
+                }
+            });
+            drawPattern();
+        }
+        function endDraw(e) { e.preventDefault(); isDrawing = false; drawPattern(); if (path.length > 0) inputClave.value = "Patrón: " + path.join("-"); }
+        function limpiarPatron() { path = []; inputClave.value = ""; drawPattern(); }
+
+        canvas.addEventListener('mousedown', startDraw); canvas.addEventListener('mousemove', moveDraw); window.addEventListener('mouseup', () => { if(isDrawing) endDraw({preventDefault:()=>{}}); });
+        canvas.addEventListener('touchstart', startDraw, {passive: false}); canvas.addEventListener('touchmove', moveDraw, {passive: false}); window.addEventListener('touchend', () => { if(isDrawing) endDraw({preventDefault:()=>{}}); });
+        drawPattern();
+
+
+        // COMUNICACIÓN CON GOOGLE APPS SCRIPT
         const URL_API = "https://script.google.com/macros/s/AKfycbx205tJR-sW11Z1gzkwu1Ln_vcZSAmqstEwfMKteXAeTf35nHsOncciqOEqtLEAu-01/exec"; 
 
         function agregarItem() {
-            const div = document.createElement('div');
-            div.className = 'row item-cotizacion';
+            const div = document.createElement('div'); div.className = 'row item-cotizacion';
             div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`;
             document.getElementById('contenedorItems').appendChild(div);
         }
@@ -188,13 +272,16 @@
                 
                 if (res.error) alert(res.error);
                 else if (tipo === 'ingresar') {
+                    // Llenar e imprimir ticket original
                     document.getElementById('tFecha').innerText = res.fecha;
                     document.getElementById('tNro').innerText = res.nroAsignado;
+                    document.getElementById('tCliente').innerText = datos.cliente;
                     document.getElementById('tEquipo').innerText = datos.tipoEquipo + " " + datos.modelo;
                     document.getElementById('tFalla').innerText = datos.falla;
                     document.getElementById('tDetalle').innerText = datos.detalle;
                     document.getElementById('tTotal').innerText = datos.total;
                     document.getElementById('tSena').innerText = datos.sena;
+                    document.getElementById('tSaldo').innerText = datos.total - datos.sena;
                     
                     const caja = document.getElementById('mensajeIngreso');
                     caja.style.display = 'block'; caja.style.background = '#d4edda';
@@ -204,17 +291,16 @@
                     window.print();
                     document.getElementById('ticketImpresion').style.display = 'none';
 
+                    // Limpiar Formulario
                     document.querySelectorAll('input[type="text"], input[type="tel"], textarea').forEach(el => el.value = '');
                     document.querySelectorAll('.item-cotizacion').forEach((el, index) => { if(index > 0) el.remove(); });
-                    document.getElementById('presTotal').value = '';
-                    document.getElementById('presSena').value = '0';
-                    document.getElementById('cableCorriente').value = "NO";
-                    document.getElementById('cableDatos').value = "NO";
+                    document.getElementById('presTotal').value = ''; document.getElementById('presSena').value = '0';
+                    document.getElementById('cableCorriente').value = "NO"; document.getElementById('cableDatos').value = "NO";
+                    limpiarPatron();
 
                 } else if (tipo === 'actualizar') {
                     alert(res.mensaje);
-                    document.getElementById('actNro').value = '';
-                    document.getElementById('actNota').value = '';
+                    document.getElementById('actNro').value = ''; document.getElementById('actNota').value = '';
                 } else if (tipo === 'consultar') {
                     const caja = document.getElementById('mensajeConsulta');
                     caja.style.display = 'block';
@@ -228,10 +314,25 @@
                             <b style="color:#c0392b; font-size:16px;">Restante a Pagar: $${saldo}</b></div>`;
                     }
 
-                    // Lógica para mostrar la etiqueta si el equipo es un historial viejo ("Entregado")
                     let badgeArchivado = res.estado === "Entregado" 
-                        ? `<div style="background:#f39c12; color:white; padding:5px; text-align:center; font-size:12px; margin-bottom:10px; border-radius:3px; font-weight:bold;">⚠️ ESTE EQUIPO YA FUE ENTREGADO AL CLIENTE</div>` 
-                        : ``;
+                        ? `<div style="background:#f39c12; color:white; padding:5px; text-align:center; font-size:12px; margin-bottom:10px; border-radius:3px; font-weight:bold;">⚠️ ESTE EQUIPO YA FUE ENTREGADO AL CLIENTE</div>` : ``;
+
+                    // Pre-cargar datos en el ticket oculto por si hace clic en "Reimprimir"
+                    let fechaMostrada = res.fecha;
+                    if(res.fecha && res.fecha.includes("T")) {
+                        let f = new Date(res.fecha);
+                        fechaMostrada = f.toLocaleDateString('es-AR');
+                    }
+                    
+                    document.getElementById('tFecha').innerText = fechaMostrada;
+                    document.getElementById('tNro').innerText = res.nroAsignado;
+                    document.getElementById('tCliente').innerText = res.cliente;
+                    document.getElementById('tEquipo').innerText = res.equipo;
+                    document.getElementById('tFalla').innerText = res.falla;
+                    document.getElementById('tDetalle').innerText = res.detalle;
+                    document.getElementById('tTotal').innerText = res.total;
+                    document.getElementById('tSena').innerText = res.sena;
+                    document.getElementById('tSaldo').innerText = saldo;
 
                     caja.innerHTML = `
                         ${badgeArchivado}
@@ -241,9 +342,14 @@
                         <b>Cliente:</b> ${res.cliente} <br>
                         <b>Equipo:</b> ${res.equipo} <br>
                         <b>Estado Actual:</b> <span style="color:#d32f2f; font-weight:bold;">${res.estado}</span> <br>
+                        <b>Clave/Patrón:</b> ${res.clave || "Ninguna"} <br>
                         ${finanzasHTML}
                         <div class="historial-texto">${res.historial}</div>
-                        <button class="btn-wsp" onclick="abrirWhatsApp('${res.telefono}', '${res.cliente}', '${res.equipo}', '${res.estado}', ${saldo})">📲 Avisar al Cliente por WhatsApp</button>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button style="background: #25D366; color: white; margin: 0; padding: 10px;" onclick="abrirWhatsApp('${res.telefono}', '${res.cliente}', '${res.equipo}', '${res.estado}', ${saldo})">📲 WhatsApp</button>
+                            <button style="background: #34495e; color: white; margin: 0; padding: 10px;" onclick="reimprimirTicket()">🖨️ Reimprimir Ticket</button>
+                        </div>
                     `;
                 }
             } catch (error) {
@@ -251,6 +357,13 @@
             } finally {
                 btn.disabled = false; btn.innerText = textoOriginal;
             }
+        }
+
+        // FUNCIÓN PARA REIMPRIMIR DESDE LA CONSULTA
+        function reimprimirTicket() {
+            document.getElementById('ticketImpresion').style.display = 'block';
+            window.print();
+            document.getElementById('ticketImpresion').style.display = 'none';
         }
     </script>
 </body>
