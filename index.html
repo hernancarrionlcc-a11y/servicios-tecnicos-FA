@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FA Insumos & Servicios</title>
     
-    <link rel="icon" href="LOGO FA.jpg" type="image/jpeg">
-    <link rel="apple-touch-icon" href="LOGO FA.jpg">
-    <link rel="icon" sizes="192x192" href="LOGO FA.jpg">
-    <link rel="icon" sizes="512x512" href="LOGO FA.jpg">
+    <link rel="icon" href="LOGO-FA.png?v=5" type="image/png">
+    <link rel="apple-touch-icon" href="LOGO-FA.png?v=5">
+    <link rel="icon" sizes="192x192" href="LOGO-FA.png?v=5">
+    <link rel="icon" sizes="512x512" href="LOGO-FA.png?v=5">
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -35,18 +35,15 @@
         .historial-texto { white-space: pre-wrap; background: #2c3e50; color: #ecf0f1; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 13px; margin-top: 10px;}
         .finanzas-box { background: #e8f8f5; border: 1px solid #1abc9c; padding: 10px; margin-top: 10px; border-radius: 5px; }
         
-        /* DASHBOARD ESTILOS */
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .dash-item { background: #f8f9fa; border-left: 4px solid #3498db; padding: 10px; border-radius: 5px; }
         .dash-item strong { display: block; font-size: 24px; color: #2c3e50; }
         .dash-item small { color: #7f8c8d; font-weight: bold; text-transform: uppercase; font-size: 10px; }
 
-        /* PATRÓN */
         .pattern-container { text-align: center; margin-top: 10px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
         canvas { background: white; border-radius: 10px; touch-action: none; box-shadow: inset 0 0 5px rgba(0,0,0,0.1); cursor: crosshair; }
         .btn-clear-pattern { background: #e74c3c; padding: 8px; font-size: 14px; margin-top: 10px; width: auto; display: inline-block; }
 
-        /* IMPRESORA */
         @media print {
             @page { size: A6 portrait; margin: 0; }
             body { margin: 0; padding: 0; background: white; }
@@ -60,16 +57,14 @@
 <body onload="ejecutarAccion('estadisticas')">
 
     <div id="ticketImpresion" style="display: none;">
-        
         <div style="position: absolute; top: 10mm; right: 10mm; text-align: center;">
             <img id="tQR" src="" style="width: 65px; height: 65px;">
         </div>
-
         <div style="text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 10px;">
-            <img src="LOGO%20FA%20.jpg?v=2" style="max-width: 130px; margin-bottom: 5px; margin-right: 40px;"> 
+            <img src="LOGO-FA.png?v=5" style="max-width: 130px; margin-bottom: 5px; margin-right: 40px;"> 
             <h2 style="margin: 0; font-size: 18px;">FA INSUMOS & SERVICIOS</h2>
             <p style="margin: 2px 0; font-size: 12px;">📞 WhatsApp: 264-567-4349</p> 
-            <p style="margin: 2px 0; font-size: 12px;">📍 Ignacio de la Roza 110 (S), Albardón, San Juan, Argentina</p>
+            <p style="margin: 2px 0; font-size: 12px;">📍 Ignacio de la Roza 110 (S), Albardón</p>
             <p style="margin: 10px 0 5px 0; font-weight: bold; font-size: 15px; text-transform: uppercase;">Comprobante de Ingreso</p>
         </div>
         <p style="margin: 5px 0;"><strong>Fecha:</strong> <span id="tFecha"></span></p>
@@ -84,11 +79,9 @@
             <p style="margin: 5px 0;"><strong>Seña:</strong> $<span id="tSena"></span></p>
             <p style="margin: 5px 0; font-weight: bold; font-size: 16px;"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
         </div>
-        
         <p style="font-size: 9px; text-align: justify; margin-top: 15px; color: #333; line-height: 1.2;">
             <strong>Términos:</strong> Pasados los 90 días corridos de notificada la reparación, si el equipo no es retirado, la empresa no se responsabiliza, considerándose abandonado (Arts. 2528/2529 CCyC), habilitando su desarme para costos de almacenaje. El cliente acepta las condiciones y declara que los accesorios entregados son únicamente los detallados.
         </p>
-        
         <div style="margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-size: 12px;">
             <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Firma del Cliente</div>
             <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Aclaración / DNI</div>
@@ -110,7 +103,7 @@
         <h2>📝 Nuevo Ingreso & Presupuesto</h2>
         <div class="row">
             <input type="text" id="cliente" class="col" placeholder="Nombre y Apellido *" required>
-            <input type="tel" id="telefono" class="col" placeholder="Teléfono (10 núm sin 0 ni 15) *" required>
+            <input type="tel" id="telefono" class="col" placeholder="Teléfono (Mínimo 10 núm) *" required>
         </div>
         <div class="row">
             <select id="tipoEquipo" class="col"><option value="CPU">CPU</option><option value="NOTEBOOK">Notebook</option><option value="IMPRESORA">Impresora</option><option value="MONITOR">Monitor</option><option value="CELULAR">Celular</option><option value="OTRO">Otro</option></select>
@@ -122,6 +115,7 @@
             <input type="text" id="clave" class="col" placeholder="Contraseña o Patrón *" required>
             <button class="btn-add" style="margin-top: 5px; width: auto; padding: 10px; background: #7f8c8d; color: white;" onclick="document.getElementById('clave').value='Sin clave'; limpiarPatron();">No tiene / Sin clave</button>
         </div>
+
         <div class="pattern-container">
             <small style="color:#7f8c8d; display:block; margin-bottom:5px;">O dibujá el patrón de desbloqueo (1 al 9)</small>
             <canvas id="patternCanvas" width="200" height="200"></canvas><br>
@@ -191,14 +185,14 @@
         canvas.addEventListener('touchstart', startDraw, {passive: false}); canvas.addEventListener('touchmove', moveDraw, {passive: false}); window.addEventListener('touchend', () => { if(isDrawing) endDraw({preventDefault:()=>{}}); });
         drawPattern();
 
-        // ⚠️ API LISTA PARA USAR ⚠️
+        // TU URL DE APPS SCRIPT
         const URL_API = "https://script.google.com/macros/s/AKfycbx205tJR-sW11Z1gzkwu1Ln_vcZSAmqstEwfMKteXAeTf35nHsOncciqOEqtLEAu-01/exec"; 
 
         function agregarItem() { const div = document.createElement('div'); div.className = 'row item-cotizacion'; div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`; document.getElementById('contenedorItems').appendChild(div); }
         function calcularTotal() { let total = 0; document.querySelectorAll('.precio').forEach(input => { total += parseFloat(input.value) || 0; }); document.getElementById('presTotal').value = total; }
         function abrirWhatsApp(telefono, cliente, equipo, estado, saldo) {
             let num = telefono.replace(/\D/g,''); if (!num.startsWith("549")) num = "549" + num;
-            let msg = `Hola ${cliente}! Te escribimos de FA Insumos. Tu equipo (${equipo}) está en estado: *${estado}*.` + (saldo > 0 ? ` Saldo a abonar: $${saldo}.` : ``);
+            let msg = `Hola ${cliente}! Te escribimos de FA Insumos & Servicios. Tu equipo (${equipo}) está en estado: *${estado}*.` + (saldo > 0 ? ` Saldo a abonar: $${saldo}.` : ``);
             window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
@@ -219,10 +213,9 @@
                 datos.clave = document.getElementById('clave').value.trim(); 
                 datos.falla = document.getElementById('falla').value.trim();
                 
-                // VALIDACIONES ESTRICTAS
                 let telLimpio = datos.telefono.replace(/\D/g, '');
-                if (!datos.cliente || telLimpio.length !== 10 || !datos.modelo || !datos.clave || !datos.falla) { 
-                    alert("⚠️ FALTAN DATOS OBLIGATORIOS:\n\n- Nombre completo\n- Teléfono (debe tener exactamente 10 números)\n- Marca/Modelo\n- Clave (o seleccioná 'Sin clave')\n- Falla del equipo"); 
+                if (!datos.cliente || telLimpio.length < 10 || !datos.modelo || !datos.clave || !datos.falla) { 
+                    alert("⚠️ FALTAN DATOS OBLIGATORIOS:\n\n- Nombre completo\n- Teléfono (mínimo 10 números)\n- Marca/Modelo\n- Clave (o seleccioná 'Sin clave')\n- Falla del equipo"); 
                     if(btn) { btn.disabled = false; btn.innerText = textoOriginal; }
                     return; 
                 }
