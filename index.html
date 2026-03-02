@@ -49,7 +49,7 @@
             body { margin: 0; padding: 0; background: white; }
             body * { visibility: hidden; }
             #ticketImpresion, #ticketImpresion * { visibility: visible; }
-            #ticketImpresion { position: absolute; left: 0; top: 0; width: 100%; height: 100%; max-width: none; padding: 12mm; box-sizing: border-box; font-family: sans-serif; font-size: 14px; background: white; }
+            #ticketImpresion { position: absolute; left: 0; top: 0; width: 100%; height: 100%; max-width: none; padding: 8mm; box-sizing: border-box; font-family: sans-serif; font-size: 12px; background: white; }
             .card, button, input, select, textarea, .pattern-container { display: none !important; }
         }
     </style>
@@ -57,32 +57,40 @@
 <body onload="ejecutarAccion('estadisticas')">
 
     <div id="ticketImpresion" style="display: none;">
-        <div style="position: absolute; top: 10mm; right: 10mm; text-align: center;">
-            <img id="tQR" src="" style="width: 65px; height: 65px;">
+        
+        <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 8px;">
+            <img src="LOGO-FA.png?v=5" style="max-width: 140px; margin: 0 auto 8px auto; display: block;"> 
+            <p style="margin: 2px 0; font-size: 11px; color: #000;">📞 WhatsApp: 264-567-4349</p> 
+            <p style="margin: 2px 0; font-size: 11px; color: #000;">📍 Ignacio de la Roza 110 (S), Albardón</p>
+            <p style="margin: 6px 0 3px 0; font-weight: bold; font-size: 14px; text-transform: uppercase; color: #000;">Comprobante de Ingreso</p>
         </div>
-        <div style="text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 10px;">
-            <img src="LOGO-FA.png?v=5" style="max-width: 130px; margin-bottom: 5px; margin-right: 40px;"> 
-            <h2 style="margin: 0; font-size: 18px;">FA INSUMOS & SERVICIOS</h2>
-            <p style="margin: 2px 0; font-size: 12px;">📞 WhatsApp: 264-567-4349</p> 
-            <p style="margin: 2px 0; font-size: 12px;">📍 Ignacio de la Roza 110 (S), Albardón</p>
-            <p style="margin: 10px 0 5px 0; font-weight: bold; font-size: 15px; text-transform: uppercase;">Comprobante de Ingreso</p>
+        
+        <p style="margin: 3px 0;"><strong>Fecha:</strong> <span id="tFecha"></span></p>
+        <p style="margin: 3px 0;"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 16px; font-weight: bold;"></span></p>
+        <p style="margin: 3px 0;"><strong>Cliente:</strong> <span id="tCliente"></span></p>
+        <p style="margin: 3px 0;"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
+        <p style="margin: 3px 0;"><strong>Falla / Obs:</strong> <span id="tFalla"></span></p>
+        
+        <hr style="border: none; border-top: 1px solid #000; margin: 8px 0;">
+        
+        <p style="margin: 3px 0;"><strong>Presupuesto / Tareas:</strong><br><pre id="tDetalle" style="font-family: sans-serif; font-size: 12px; margin: 3px 0; white-space: pre-wrap;"></pre></p>
+        
+        <div style="border-top: 1px solid #000; padding-top: 5px; margin-top: 8px;">
+            <p style="margin: 3px 0;"><strong>Total:</strong> $<span id="tTotal"></span></p>
+            <p style="margin: 3px 0;"><strong>Seña:</strong> $<span id="tSena"></span></p>
+            <p style="margin: 3px 0; font-weight: bold; font-size: 14px;"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
         </div>
-        <p style="margin: 5px 0;"><strong>Fecha:</strong> <span id="tFecha"></span></p>
-        <p style="margin: 5px 0;"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 18px; font-weight: bold;"></span></p>
-        <p style="margin: 5px 0;"><strong>Cliente:</strong> <span id="tCliente"></span></p>
-        <p style="margin: 5px 0;"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
-        <p style="margin: 5px 0;"><strong>Falla / Obs:</strong> <span id="tFalla"></span></p>
-        <hr style="border-top: 1px dashed #333; margin: 10px 0;">
-        <p style="margin: 5px 0;"><strong>Presupuesto / Tareas:</strong><br><pre id="tDetalle" style="font-family: sans-serif; font-size: 13px; margin: 5px 0; white-space: pre-wrap;"></pre></p>
-        <div style="border-top: 1px solid #333; padding-top: 5px; margin-top: 10px;">
-            <p style="margin: 5px 0;"><strong>Total:</strong> $<span id="tTotal"></span></p>
-            <p style="margin: 5px 0;"><strong>Seña:</strong> $<span id="tSena"></span></p>
-            <p style="margin: 5px 0; font-weight: bold; font-size: 16px;"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
+        
+        <div style="text-align: center; margin: 15px 0;">
+            <img id="tQR" src="" style="width: 65px; height: 65px; margin: 0 auto; display: block;">
+            <p style="font-size: 9px; color: #000; margin: 3px 0 0 0;">Uso interno / Seguimiento</p>
         </div>
-        <p style="font-size: 9px; text-align: justify; margin-top: 15px; color: #333; line-height: 1.2;">
+
+        <p style="font-size: 9px; text-align: justify; margin-top: 10px; color: #000; line-height: 1.15;">
             <strong>Términos:</strong> Pasados los 90 días corridos de notificada la reparación, si el equipo no es retirado, la empresa no se responsabiliza, considerándose abandonado (Arts. 2528/2529 CCyC), habilitando su desarme para costos de almacenaje. El cliente acepta las condiciones y declara que los accesorios entregados son únicamente los detallados.
         </p>
-        <div style="margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-size: 12px;">
+        
+        <div style="margin-top: 35px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
             <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Firma del Cliente</div>
             <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Aclaración / DNI</div>
         </div>
@@ -113,13 +121,13 @@
         <label>Seguridad del Equipo *</label>
         <div class="row">
             <input type="text" id="clave" class="col" placeholder="Contraseña o Patrón *" required>
-            <button class="btn-add" style="margin-top: 5px; width: auto; padding: 10px; background: #7f8c8d; color: white;" onclick="document.getElementById('clave').value='Sin clave'; limpiarPatron();">No tiene / Sin clave</button>
+            <button type="button" class="btn-add" style="margin-top: 5px; width: auto; padding: 10px; background: #7f8c8d; color: white;" onclick="limpiarPatron(); document.getElementById('clave').value='Sin clave';">No tiene / Sin clave</button>
         </div>
 
         <div class="pattern-container">
             <small style="color:#7f8c8d; display:block; margin-bottom:5px;">O dibujá el patrón de desbloqueo (1 al 9)</small>
             <canvas id="patternCanvas" width="200" height="200"></canvas><br>
-            <button class="btn-clear-pattern" onclick="limpiarPatron()">Borrar Patrón</button>
+            <button type="button" class="btn-clear-pattern" onclick="limpiarPatron()">Borrar Patrón</button>
         </div>
 
         <textarea id="falla" placeholder="Falla / Observaciones del cliente... *" style="margin-top:15px;" required></textarea>
@@ -135,7 +143,7 @@
         <div id="contenedorItems">
             <div class="row item-cotizacion"><input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"></div>
         </div>
-        <button class="btn-add" onclick="agregarItem()">+ Añadir otro ítem</button>
+        <button type="button" class="btn-add" onclick="agregarItem()">+ Añadir otro ítem</button>
         <div class="row" style="margin-top: 15px;">
             <div class="col"><label>Total ($)</label><input type="number" id="presTotal" readonly style="background: #eee; font-weight: bold;"></div>
             <div class="col"><label>Seña ($)</label><input type="number" id="presSena" value="0" onkeyup="calcularTotal()"></div>
@@ -162,37 +170,69 @@
     </div>
 
     <script>
-        // LÓGICA DEL PATRÓN
-        const canvas = document.getElementById('patternCanvas'); const ctx = canvas.getContext('2d'); const inputClave = document.getElementById('clave');
+        const canvas = document.getElementById('patternCanvas'); 
+        const ctx = canvas.getContext('2d'); 
+        const inputClave = document.getElementById('clave');
         let points = []; let path = []; let isDrawing = false; let currentX, currentY;
-        for (let row = 0; row < 3; row++) { for (let col = 0; col < 3; col++) { points.push({ x: 40 + col * 60, y: 40 + row * 60, id: row * 3 + col + 1 }); } }
+        
+        for (let row = 0; row < 3; row++) { 
+            for (let col = 0; col < 3; col++) { 
+                points.push({ x: 40 + col * 60, y: 40 + row * 60, id: row * 3 + col + 1 }); 
+            } 
+        }
+
         function drawPattern() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            points.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 8, 0, Math.PI * 2); ctx.fillStyle = path.includes(p.id) ? '#3498db' : '#bdc3c7'; ctx.fill(); });
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            points.forEach(p => { 
+                ctx.beginPath(); 
+                ctx.arc(p.x, p.y, 8, 0, Math.PI * 2); 
+                ctx.fillStyle = path.includes(p.id) ? '#3498db' : '#555555'; 
+                ctx.fill(); 
+            });
+
             if (path.length > 0) {
-                ctx.beginPath(); ctx.strokeStyle = '#3498db'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-                const first = points.find(p => p.id === path[0]); ctx.moveTo(first.x, first.y);
-                for (let i = 1; i < path.length; i++) { const pt = points.find(p => p.id === path[i]); ctx.lineTo(pt.x, pt.y); }
-                if (isDrawing) ctx.lineTo(currentX, currentY); ctx.stroke();
+                ctx.beginPath(); 
+                ctx.strokeStyle = '#3498db'; 
+                ctx.lineWidth = 4; 
+                ctx.lineCap = 'round'; 
+                ctx.lineJoin = 'round';
+                
+                const first = points.find(p => p.id === path[0]); 
+                ctx.moveTo(first.x, first.y);
+                
+                for (let i = 1; i < path.length; i++) { 
+                    const pt = points.find(p => p.id === path[i]); 
+                    ctx.lineTo(pt.x, pt.y); 
+                }
+                
+                if (isDrawing) ctx.lineTo(currentX, currentY); 
+                ctx.stroke();
             }
         }
+
         function getPos(e) { const rect = canvas.getBoundingClientRect(); return { x: (e.touches ? e.touches[0].clientX : e.clientX) - rect.left, y: (e.touches ? e.touches[0].clientY : e.clientY) - rect.top }; }
         function startDraw(e) { e.preventDefault(); isDrawing = true; path = []; inputClave.value = ""; moveDraw(e); }
         function moveDraw(e) { if (!isDrawing) return; e.preventDefault(); const pos = getPos(e); currentX = pos.x; currentY = pos.y; points.forEach(p => { if (!path.includes(p.id) && Math.hypot(p.x - currentX, p.y - currentY) < 20) path.push(p.id); }); drawPattern(); }
         function endDraw(e) { e.preventDefault(); isDrawing = false; drawPattern(); if (path.length > 0) inputClave.value = "Patrón: " + path.join("-"); }
         function limpiarPatron() { path = []; inputClave.value = ""; drawPattern(); }
+        
         canvas.addEventListener('mousedown', startDraw); canvas.addEventListener('mousemove', moveDraw); window.addEventListener('mouseup', () => { if(isDrawing) endDraw({preventDefault:()=>{}}); });
         canvas.addEventListener('touchstart', startDraw, {passive: false}); canvas.addEventListener('touchmove', moveDraw, {passive: false}); window.addEventListener('touchend', () => { if(isDrawing) endDraw({preventDefault:()=>{}}); });
+        
         drawPattern();
 
-        // TU URL DE APPS SCRIPT
         const URL_API = "https://script.google.com/macros/s/AKfycbx205tJR-sW11Z1gzkwu1Ln_vcZSAmqstEwfMKteXAeTf35nHsOncciqOEqtLEAu-01/exec"; 
 
-        function agregarItem() { const div = document.createElement('div'); div.className = 'row item-cotizacion'; div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`; document.getElementById('contenedorItems').appendChild(div); }
+        function agregarItem() { const div = document.createElement('div'); div.className = 'row item-cotizacion'; div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button type="button" class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`; document.getElementById('contenedorItems').appendChild(div); }
         function calcularTotal() { let total = 0; document.querySelectorAll('.precio').forEach(input => { total += parseFloat(input.value) || 0; }); document.getElementById('presTotal').value = total; }
+        
         function abrirWhatsApp(telefono, cliente, equipo, estado, saldo) {
             let num = telefono.replace(/\D/g,''); if (!num.startsWith("549")) num = "549" + num;
-            let msg = `Hola ${cliente}! Te escribimos de FA Insumos & Servicios. Tu equipo (${equipo}) está en estado: *${estado}*.` + (saldo > 0 ? ` Saldo a abonar: $${saldo}.` : ``);
+            
+            let msg = `Hola ${cliente}! Te escribimos de FA Insumos & Servicios. Te avisamos que tu equipo (${equipo}) se encuentra en estado: ${estado}.` + (saldo > 0 ? ` El saldo a abonar es de $${saldo}.` : ``) + ` ¡Cualquier consulta estamos a disposición!`;
+            
             window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
@@ -250,7 +290,9 @@
                     document.getElementById('tTotal').innerText = datos.total; document.getElementById('tSena').innerText = datos.sena;
                     document.getElementById('tSaldo').innerText = datos.total - datos.sena;
                     
-                    document.getElementById('tQR').src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=FA-Insumos-Orden-" + res.nroAsignado;
+                    // --- GENERADOR DE CÓDIGO QR PARA INGRESOS ---
+                    let qrDataIngreso = encodeURIComponent("FA INSUMOS Y SERVICIOS\nREPARACION N° " + res.nroAsignado + "\nESTADO: En Revisión");
+                    document.getElementById('tQR').src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + qrDataIngreso;
 
                     const caja = document.getElementById('mensajeIngreso'); caja.style.display = 'block'; caja.style.background = '#d4edda';
                     caja.innerHTML = `✅ ¡Ingresado!<br><span class="nro-destacado">Nº ${res.nroAsignado}</span>`;
@@ -273,7 +315,10 @@
                     document.getElementById('tCliente').innerText = res.cliente; document.getElementById('tEquipo').innerText = res.equipo;
                     document.getElementById('tFalla').innerText = res.falla; document.getElementById('tDetalle').innerText = res.detalle;
                     document.getElementById('tTotal').innerText = res.total; document.getElementById('tSena').innerText = res.sena; document.getElementById('tSaldo').innerText = saldo;
-                    document.getElementById('tQR').src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=FA-Insumos-Orden-" + res.nroAsignado;
+                    
+                    // --- GENERADOR DE CÓDIGO QR PARA CONSULTAS ---
+                    let qrDataConsulta = encodeURIComponent("FA INSUMOS Y SERVICIOS\nREPARACION N° " + res.nroAsignado + "\nESTADO: " + res.estado);
+                    document.getElementById('tQR').src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + qrDataConsulta;
 
                     caja.innerHTML = `${badgeArchivado}<div style="background: #34495e; color: white; padding: 5px; text-align: center; border-radius: 3px; margin-bottom: 10px;"><b>REPARACIÓN Nº ${res.nroAsignado}</b></div><b>Cliente:</b> ${res.cliente} <br><b>Equipo:</b> ${res.equipo} <br><b>Estado Actual:</b> <span style="color:#d32f2f; font-weight:bold;">${res.estado}</span> <br><b>Clave/Patrón:</b> ${res.clave || "Ninguna"} <br>${finanzasHTML}<div class="historial-texto">${res.historial}</div><div style="display: flex; gap: 10px; margin-top: 15px;"><button style="background: #25D366; color: white; margin: 0; padding: 10px;" onclick="abrirWhatsApp('${res.telefono}', '${res.cliente}', '${res.equipo}', '${res.estado}', ${saldo})">📲 WhatsApp</button><button style="background: #34495e; color: white; margin: 0; padding: 10px;" onclick="reimprimirTicket()">🖨️ Reimprimir Ticket</button></div>`;
                 }
