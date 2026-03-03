@@ -260,6 +260,14 @@
         function agregarItem() { const div = document.createElement('div'); div.className = 'row item-cotizacion'; div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button type="button" class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`; document.getElementById('contenedorItems').appendChild(div); }
         function calcularTotal() { let total = 0; document.querySelectorAll('.precio').forEach(input => { total += parseFloat(input.value) || 0; }); document.getElementById('presTotal').value = total; }
         
+        function abrirWhatsApp(telefono, cliente, equipo, estado, saldo) {
+            let num = telefono.replace(/\D/g,''); if (!num.startsWith("549")) num = "549" + num;
+            
+            let msg = `Hola ${cliente}! Te escribimos de FA Insumos & Servicios. Te avisamos que tu equipo (${equipo}) se encuentra en estado: ${estado}.` + (saldo > 0 ? ` El saldo a abonar es de $${saldo}.` : ``) + ` ¡Cualquier consulta estamos a disposición!`;
+            
+            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
         // --- FUNCIÓN AGREGADA PARA LLENAR AMBAS COPIAS ---
         function llenarCampos(clase, valor) {
             document.querySelectorAll('.' + clase).forEach(el => {
@@ -366,7 +374,8 @@
                     let qrDataConsulta = encodeURIComponent("FA INSUMOS Y SERVICIOS\nREPARACION N° " + res.nroAsignado + "\nESTADO: " + res.estado);
                     llenarCampos('tQR', "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + qrDataConsulta);
 
-                    caja.innerHTML = `${badgeArchivado}<div style="background: #34495e; color: white; padding: 5px; text-align: center; border-radius: 3px; margin-bottom: 10px;"><b>REPARACIÓN Nº ${res.nroAsignado}</b></div><b>Cliente:</b> ${res.cliente} <br><b>Equipo:</b> ${res.equipo} <br><b>Estado Actual:</b> <span style="color:#d32f2f; font-weight:bold;">${res.estado}</span> <br><b>Clave/Patrón:</b> ${res.clave || "Ninguna"} <br>${finanzasHTML}<div class="historial-texto">${res.historial}</div><div style="display: flex; gap: 10px; margin-top: 15px;"><button style="background: #34495e; color: white; margin: 0; padding: 10px;" onclick="reimprimirTicket()">🖨️ Reimprimir Ticket</button></div>`;
+                    // --- ACÁ ESTÁ EL BOTÓN DE WHATSAPP RESTAURADO JUNTO AL DE IMPRESIÓN ---
+                    caja.innerHTML = `${badgeArchivado}<div style="background: #34495e; color: white; padding: 5px; text-align: center; border-radius: 3px; margin-bottom: 10px;"><b>REPARACIÓN Nº ${res.nroAsignado}</b></div><b>Cliente:</b> ${res.cliente} <br><b>Equipo:</b> ${res.equipo} <br><b>Estado Actual:</b> <span style="color:#d32f2f; font-weight:bold;">${res.estado}</span> <br><b>Clave/Patrón:</b> ${res.clave || "Ninguna"} <br>${finanzasHTML}<div class="historial-texto">${res.historial}</div><div style="display: flex; gap: 10px; margin-top: 15px;"><button style="background: #25D366; color: white; margin: 0; padding: 10px;" onclick="abrirWhatsApp('${res.telefono}', '${res.cliente}', '${res.equipo}', '${res.estado}', ${saldo})">📲 WhatsApp</button><button style="background: #34495e; color: white; margin: 0; padding: 10px;" onclick="reimprimirTicket()">🖨️ Reimprimir Ticket</button></div>`;
                 }
             } catch (error) { if(tipo !== 'estadisticas') alert("Error de conexión. Revisa la URL."); } finally { if(btn) { btn.disabled = false; btn.innerText = textoOriginal; } }
         }
