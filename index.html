@@ -43,55 +43,88 @@
         canvas { background: white; border-radius: 10px; touch-action: none; box-shadow: inset 0 0 5px rgba(0,0,0,0.1); cursor: crosshair; }
         .btn-clear-pattern { background: #e74c3c; padding: 8px; font-size: 14px; margin-top: 10px; width: auto; display: inline-block; }
 
+        /* --- CSS DE IMPRESIÓN MODIFICADO PARA DUPLICADO --- */
         @media print {
             @page { size: A6 portrait; margin: 0; }
             body { margin: 0; padding: 0; background: white; }
             body * { visibility: hidden; }
-            #ticketImpresion, #ticketImpresion * { visibility: visible; }
-            #ticketImpresion { position: absolute; left: 0; top: 0; width: 100%; height: 100%; max-width: none; padding: 8mm; box-sizing: border-box; font-family: sans-serif; font-size: 12px; background: white; }
+            #contenedorImpresion, #contenedorImpresion * { visibility: visible; }
+            #contenedorImpresion { position: absolute; left: 0; top: 0; width: 100%; max-width: none; padding: 0; box-sizing: border-box; font-family: sans-serif; font-size: 12px; background: white; }
+            
+            .ticket-original { page-break-after: always; break-after: page; }
+            .ticket-copia { padding: 8mm; box-sizing: border-box; height: 148mm; width: 105mm; }
+            
             .card, button, input, select, textarea, .pattern-container { display: none !important; }
         }
     </style>
 </head>
 <body onload="ejecutarAccion('estadisticas')">
 
-    <div id="ticketImpresion" style="display: none;">
+    <div id="contenedorImpresion" style="display: none;">
         
-        <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 8px;">
-            <img src="LOGO-FA.png?v=5" style="max-width: 140px; margin: 0 auto 8px auto; display: block;"> 
-            <p style="margin: 2px 0; font-size: 11px; color: #000;">📞 WhatsApp: 264-567-4349</p> 
-            <p style="margin: 2px 0; font-size: 11px; color: #000;">📍 Ignacio de la Roza 110 (S), Albardón</p>
-            <p style="margin: 6px 0 3px 0; font-weight: bold; font-size: 14px; text-transform: uppercase; color: #000;">Comprobante de Ingreso</p>
-        </div>
-        
-        <p style="margin: 3px 0;"><strong>Fecha:</strong> <span id="tFecha"></span></p>
-        <p style="margin: 3px 0;"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 16px; font-weight: bold;"></span></p>
-        <p style="margin: 3px 0;"><strong>Cliente:</strong> <span id="tCliente"></span></p>
-        <p style="margin: 3px 0;"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
-        <p style="margin: 3px 0;"><strong>Falla / Obs:</strong> <span id="tFalla"></span></p>
-        
-        <hr style="border: none; border-top: 1px solid #000; margin: 8px 0;">
-        
-        <p style="margin: 3px 0;"><strong>Presupuesto / Tareas:</strong><br><pre id="tDetalle" style="font-family: sans-serif; font-size: 12px; margin: 3px 0; white-space: pre-wrap;"></pre></p>
-        
-        <div style="border-top: 1px solid #000; padding-top: 5px; margin-top: 8px;">
-            <p style="margin: 3px 0;"><strong>Total:</strong> $<span id="tTotal"></span></p>
-            <p style="margin: 3px 0;"><strong>Seña:</strong> $<span id="tSena"></span></p>
-            <p style="margin: 3px 0; font-weight: bold; font-size: 14px;"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
-        </div>
-        
-        <div style="text-align: center; margin: 15px 0;">
-            <img id="tQR" src="" style="width: 65px; height: 65px; margin: 0 auto; display: block;">
-            <p style="font-size: 9px; color: #000; margin: 3px 0 0 0;">Uso interno / Seguimiento</p>
+        <div class="ticket-copia ticket-original">
+            <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 8px;">
+                <img src="LOGO-FA.png?v=6" style="max-width: 140px; margin: 0 auto 8px auto; display: block;"> 
+                <p style="margin: 2px 0; font-size: 11px; color: #000;">📞 WhatsApp: 264-567-4349</p> 
+                <p style="margin: 2px 0; font-size: 11px; color: #000;">📍 Ignacio de la Roza 110 (S), Albardón</p>
+                <p style="margin: 6px 0 3px 0; font-weight: bold; font-size: 12px; text-transform: uppercase; color: #000;">Original: Comprobante Cliente</p>
+            </div>
+            
+            <p style="margin: 3px 0;"><strong>Fecha:</strong> <span class="tFecha"></span></p>
+            <p style="margin: 3px 0;"><strong>Orden Nº:</strong> <span class="tNro" style="font-size: 16px; font-weight: bold;"></span></p>
+            <p style="margin: 3px 0;"><strong>Cliente:</strong> <span class="tCliente"></span></p>
+            <p style="margin: 3px 0;"><strong>Equipo:</strong> <span class="tEquipo"></span></p>
+            <p style="margin: 3px 0;"><strong>Falla / Obs:</strong> <span class="tFalla"></span></p>
+            
+            <hr style="border: none; border-top: 1px solid #000; margin: 8px 0;">
+            
+            <p style="margin: 3px 0;"><strong>Presupuesto / Tareas:</strong><br><pre class="tDetalle" style="font-family: sans-serif; font-size: 12px; margin: 3px 0; white-space: pre-wrap;"></pre></p>
+            
+            <div style="border-top: 1px solid #000; padding-top: 5px; margin-top: 8px;">
+                <p style="margin: 3px 0;"><strong>Total:</strong> $<span class="tTotal"></span></p>
+                <p style="margin: 3px 0;"><strong>Seña:</strong> $<span class="tSena"></span></p>
+                <p style="margin: 3px 0; font-weight: bold; font-size: 14px;"><strong>Saldo a Pagar:</strong> $<span class="tSaldo"></span></p>
+            </div>
+            
+            <div style="text-align: center; margin: 15px 0;">
+                <img class="tQR" src="" style="width: 65px; height: 65px; margin: 0 auto; display: block;">
+                <p style="font-size: 9px; color: #000; margin: 3px 0 0 0;">Uso interno / Seguimiento</p>
+            </div>
+
+            <p style="font-size: 9px; text-align: justify; margin-top: 10px; color: #000; line-height: 1.15;">
+                <strong>Términos:</strong> Pasados los 90 días corridos de notificada la reparación, si el equipo no es retirado, la empresa no se responsabiliza, considerándose abandonado (Arts. 2528/2529 CCyC), habilitando su desarme para costos de almacenaje. El cliente acepta las condiciones y declara que los accesorios entregados son únicamente los detallados.
+            </p>
+            
+            <div style="margin-top: 35px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
+                <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Firma del Cliente</div>
+                <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Aclaración / DNI</div>
+            </div>
         </div>
 
-        <p style="font-size: 9px; text-align: justify; margin-top: 10px; color: #000; line-height: 1.15;">
-            <strong>Términos:</strong> Pasados los 90 días corridos de notificada la reparación, si el equipo no es retirado, la empresa no se responsabiliza, considerándose abandonado (Arts. 2528/2529 CCyC), habilitando su desarme para costos de almacenaje. El cliente acepta las condiciones y declara que los accesorios entregados son únicamente los detallados.
-        </p>
-        
-        <div style="margin-top: 35px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
-            <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Firma del Cliente</div>
-            <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">Aclaración / DNI</div>
+        <div class="ticket-copia">
+            <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 8px;">
+                <img src="LOGO-FA.png?v=6" style="max-width: 140px; margin: 0 auto 8px auto; display: block;"> 
+                <p style="margin: 6px 0 3px 0; font-weight: bold; font-size: 12px; text-transform: uppercase; color: #000;">Duplicado: Uso Interno Taller</p>
+            </div>
+            
+            <p style="margin: 3px 0;"><strong>Orden Nº:</strong> <span class="tNro" style="font-size: 16px; font-weight: bold;"></span></p>
+            <p style="margin: 3px 0;"><strong>Cliente:</strong> <span class="tCliente"></span> (<span class="tTelefono"></span>)</p>
+            <p style="margin: 3px 0;"><strong>Equipo:</strong> <span class="tEquipo"></span></p>
+            <p style="margin: 3px 0;"><strong>Falla / Obs:</strong> <span class="tFalla"></span></p>
+            <p style="margin: 3px 0;"><strong>Clave/Patrón:</strong> <span class="tClave" style="background:#000; color:#fff; padding: 2px 5px;"></span></p>
+            
+            <hr style="border: none; border-top: 1px solid #000; margin: 8px 0;">
+            
+            <p style="margin: 3px 0;"><strong>Total:</strong> $<span class="tTotal"></span> | <strong>Seña:</strong> $<span class="tSena"></span></p>
+            <p style="margin: 3px 0; font-weight: bold; font-size: 14px;"><strong>Saldo a Pagar:</strong> $<span class="tSaldo"></span></p>
+            
+            <div style="height: 60px; border: 1px solid #000; margin-top: 10px; padding: 5px; font-size: 10px;">
+                ESPACIO PARA NOTAS TÉCNICAS:
+            </div>
+            
+            <div style="text-align: center; margin: 15px 0;">
+                <img class="tQR" src="" style="width: 65px; height: 65px; margin: 0 auto; display: block;">
+            </div>
         </div>
     </div>
 
@@ -227,12 +260,12 @@
         function agregarItem() { const div = document.createElement('div'); div.className = 'row item-cotizacion'; div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button type="button" class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`; document.getElementById('contenedorItems').appendChild(div); }
         function calcularTotal() { let total = 0; document.querySelectorAll('.precio').forEach(input => { total += parseFloat(input.value) || 0; }); document.getElementById('presTotal').value = total; }
         
-        function abrirWhatsApp(telefono, cliente, equipo, estado, saldo) {
-            let num = telefono.replace(/\D/g,''); if (!num.startsWith("549")) num = "549" + num;
-            
-            let msg = `Hola ${cliente}! Te escribimos de FA Insumos & Servicios. Te avisamos que tu equipo (${equipo}) se encuentra en estado: ${estado}.` + (saldo > 0 ? ` El saldo a abonar es de $${saldo}.` : ``) + ` ¡Cualquier consulta estamos a disposición!`;
-            
-            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
+        // --- FUNCIÓN AGREGADA PARA LLENAR AMBAS COPIAS ---
+        function llenarCampos(clase, valor) {
+            document.querySelectorAll('.' + clase).forEach(el => {
+                if (el.tagName === "IMG") { el.src = valor; }
+                else { el.innerText = valor; }
+            });
         }
 
         async function ejecutarAccion(tipo) {
@@ -283,20 +316,26 @@
                     document.getElementById('dashEntregados').innerText = res.entregados;
                 }
                 else if (tipo === 'ingresar') {
-                    document.getElementById('tFecha').innerText = res.fecha; document.getElementById('tNro').innerText = res.nroAsignado;
-                    document.getElementById('tCliente').innerText = datos.cliente; document.getElementById('tEquipo').innerText = datos.tipoEquipo + " " + datos.modelo;
-                    document.getElementById('tFalla').innerText = datos.falla; document.getElementById('tDetalle').innerText = datos.detalle;
-                    document.getElementById('tTotal').innerText = datos.total; document.getElementById('tSena').innerText = datos.sena;
-                    document.getElementById('tSaldo').innerText = datos.total - datos.sena;
+                    // --- REEMPLAZO PARA LLENAR DUPLICADOS ---
+                    llenarCampos('tFecha', res.fecha); 
+                    llenarCampos('tNro', res.nroAsignado);
+                    llenarCampos('tCliente', datos.cliente); 
+                    llenarCampos('tTelefono', datos.telefono);
+                    llenarCampos('tEquipo', datos.tipoEquipo + " " + datos.modelo);
+                    llenarCampos('tFalla', datos.falla); 
+                    llenarCampos('tDetalle', datos.detalle);
+                    llenarCampos('tTotal', datos.total); 
+                    llenarCampos('tSena', datos.sena);
+                    llenarCampos('tSaldo', datos.total - datos.sena);
+                    llenarCampos('tClave', datos.clave || "Ninguna");
                     
-                    // --- GENERADOR DE CÓDIGO QR PARA INGRESOS ---
                     let qrDataIngreso = encodeURIComponent("FA INSUMOS Y SERVICIOS\nREPARACION N° " + res.nroAsignado + "\nESTADO: En Revisión");
-                    document.getElementById('tQR').src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + qrDataIngreso;
+                    llenarCampos('tQR', "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + qrDataIngreso);
 
                     const caja = document.getElementById('mensajeIngreso'); caja.style.display = 'block'; caja.style.background = '#d4edda';
                     caja.innerHTML = `✅ ¡Ingresado!<br><span class="nro-destacado">Nº ${res.nroAsignado}</span>`;
                     
-                    setTimeout(() => { document.getElementById('ticketImpresion').style.display = 'block'; window.print(); document.getElementById('ticketImpresion').style.display = 'none'; }, 500);
+                    setTimeout(() => { document.getElementById('contenedorImpresion').style.display = 'block'; window.print(); document.getElementById('contenedorImpresion').style.display = 'none'; }, 500);
 
                     document.querySelectorAll('input[type="text"], input[type="tel"], textarea').forEach(el => el.value = ''); document.querySelectorAll('.item-cotizacion').forEach((el, idx) => { if(idx > 0) el.remove(); });
                     document.getElementById('presTotal').value = ''; document.getElementById('presSena').value = '0'; limpiarPatron();
@@ -310,21 +349,30 @@
                     let badgeArchivado = res.estado === "Entregado" ? `<div style="background:#f39c12; color:white; padding:5px; text-align:center; font-size:12px; margin-bottom:10px; border-radius:3px; font-weight:bold;">⚠️ ESTE EQUIPO YA FUE ENTREGADO AL CLIENTE</div>` : ``;
 
                     let fechaMostrada = res.fecha && res.fecha.includes("T") ? new Date(res.fecha).toLocaleDateString('es-AR') : res.fecha;
-                    document.getElementById('tFecha').innerText = fechaMostrada; document.getElementById('tNro').innerText = res.nroAsignado;
-                    document.getElementById('tCliente').innerText = res.cliente; document.getElementById('tEquipo').innerText = res.equipo;
-                    document.getElementById('tFalla').innerText = res.falla; document.getElementById('tDetalle').innerText = res.detalle;
-                    document.getElementById('tTotal').innerText = res.total; document.getElementById('tSena').innerText = res.sena; document.getElementById('tSaldo').innerText = saldo;
                     
-                    // --- GENERADOR DE CÓDIGO QR PARA CONSULTAS ---
+                    // --- REEMPLAZO PARA LLENAR DUPLICADOS EN CONSULTA ---
+                    llenarCampos('tFecha', fechaMostrada); 
+                    llenarCampos('tNro', res.nroAsignado);
+                    llenarCampos('tCliente', res.cliente); 
+                    llenarCampos('tTelefono', res.telefono);
+                    llenarCampos('tEquipo', res.equipo);
+                    llenarCampos('tFalla', res.falla); 
+                    llenarCampos('tDetalle', res.detalle);
+                    llenarCampos('tTotal', res.total); 
+                    llenarCampos('tSena', res.sena); 
+                    llenarCampos('tSaldo', saldo);
+                    llenarCampos('tClave', res.clave || "Ninguna");
+                    
                     let qrDataConsulta = encodeURIComponent("FA INSUMOS Y SERVICIOS\nREPARACION N° " + res.nroAsignado + "\nESTADO: " + res.estado);
-                    document.getElementById('tQR').src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + qrDataConsulta;
+                    llenarCampos('tQR', "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + qrDataConsulta);
 
-                    caja.innerHTML = `${badgeArchivado}<div style="background: #34495e; color: white; padding: 5px; text-align: center; border-radius: 3px; margin-bottom: 10px;"><b>REPARACIÓN Nº ${res.nroAsignado}</b></div><b>Cliente:</b> ${res.cliente} <br><b>Equipo:</b> ${res.equipo} <br><b>Estado Actual:</b> <span style="color:#d32f2f; font-weight:bold;">${res.estado}</span> <br><b>Clave/Patrón:</b> ${res.clave || "Ninguna"} <br>${finanzasHTML}<div class="historial-texto">${res.historial}</div><div style="display: flex; gap: 10px; margin-top: 15px;"><button style="background: #25D366; color: white; margin: 0; padding: 10px;" onclick="abrirWhatsApp('${res.telefono}', '${res.cliente}', '${res.equipo}', '${res.estado}', ${saldo})">📲 WhatsApp</button><button style="background: #34495e; color: white; margin: 0; padding: 10px;" onclick="reimprimirTicket()">🖨️ Reimprimir Ticket</button></div>`;
+                    caja.innerHTML = `${badgeArchivado}<div style="background: #34495e; color: white; padding: 5px; text-align: center; border-radius: 3px; margin-bottom: 10px;"><b>REPARACIÓN Nº ${res.nroAsignado}</b></div><b>Cliente:</b> ${res.cliente} <br><b>Equipo:</b> ${res.equipo} <br><b>Estado Actual:</b> <span style="color:#d32f2f; font-weight:bold;">${res.estado}</span> <br><b>Clave/Patrón:</b> ${res.clave || "Ninguna"} <br>${finanzasHTML}<div class="historial-texto">${res.historial}</div><div style="display: flex; gap: 10px; margin-top: 15px;"><button style="background: #34495e; color: white; margin: 0; padding: 10px;" onclick="reimprimirTicket()">🖨️ Reimprimir Ticket</button></div>`;
                 }
             } catch (error) { if(tipo !== 'estadisticas') alert("Error de conexión. Revisa la URL."); } finally { if(btn) { btn.disabled = false; btn.innerText = textoOriginal; } }
         }
 
-        function reimprimirTicket() { setTimeout(() => { document.getElementById('ticketImpresion').style.display = 'block'; window.print(); document.getElementById('ticketImpresion').style.display = 'none'; }, 200); }
+        // --- REEMPLAZO DE CONTENEDOR EN IMPRESIÓN ---
+        function reimprimirTicket() { setTimeout(() => { document.getElementById('contenedorImpresion').style.display = 'block'; window.print(); document.getElementById('contenedorImpresion').style.display = 'none'; }, 200); }
     </script>
 </body>
 </html>
