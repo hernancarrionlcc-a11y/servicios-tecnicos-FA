@@ -54,7 +54,6 @@
       canvas { background: white; border-radius: 10px; touch-action: none; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); cursor: crosshair; }
       .btn-clear-pattern { background: #e74c3c; padding: 8px; font-size: 14px; margin-top: 10px; width: auto; display: inline-block; }
 
-      /* Corrección de Impresión (Soluciona hoja en blanco) */
       @media print {
         @page { size: A6 portrait; margin: 0; }
         body { margin: 0; padding: 0; background: white; }
@@ -85,9 +84,9 @@
 
         <div id="ticketImpresion" style="display: none">
           <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 8px;">
-            <img src="LOGO-FA.png?v=5" style="max-width: 140px; margin: 0 auto 8px auto; display: block" />
-            <p style="margin: 2px 0; font-size: 11px; color: #000">📞 WhatsApp: 264-567-4349</p>
-            <p style="margin: 2px 0; font-size: 11px; color: #000">📍 Ignacio de la Roza 110 (S), Albardón, San Juan</p>
+            <img src="LOGO-FA.png?v=5" style="max-width: 140px; margin: 0 auto 2px auto; display: block" />
+            <p style="margin: 0px 0; font-size: 11px; color: #000">📞 WhatsApp: 264-567-4349</p>
+            <p style="margin: 2px 0; font-size: 11px; color: #000">📍 Ignacio de la Roza 110 (S), Albardón, San Juan, Argentina</p>
             <p style="margin: 6px 0 3px 0; font-weight: bold; font-size: 14px; text-transform: uppercase; color: #000;">Comprobante de Ingreso</p>
           </div>
           <p style="margin: 3px 0"><strong>Fecha:</strong> <span id="tFecha"></span></p>
@@ -104,14 +103,21 @@
             <p style="margin: 3px 0"><strong>Seña:</strong> $<span id="tSena"></span></p>
             <p style="margin: 3px 0; font-weight: bold; font-size: 14px"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
           </div>
-          <div style="text-align: center; margin: 15px 0">
-            <img id="tQR" src="" style="width: 65px; height: 65px; margin: 0 auto; display: block" />
-            <p style="font-size: 9px; color: #000; margin: 3px 0 0 0">Escaneá para ver el estado de tu equipo</p>
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0; gap: 10px;">
+            <div style="flex: 0 0 70px; text-align: center;">
+              <img id="tQR" src="" style="width: 65px; height: 65px; margin: 0 auto; display: block" />
+              <p style="font-size: 7px; color: #000; margin: 2px 0 0 0">Escaneá para estado</p>
+            </div>
+            <div style="flex: 1;">
+              <p style="font-size: 8px; text-align: justify; margin: 0; color: #000; line-height: 1.1;"><strong>Términos y Condiciones:</strong> <strong>1.Plazos de Retiro y Abandono:</strong> Pasados los 90 días corridos de notificada la reparación o el presupuesto, si el equipo no es retirado, la empresa no se responsabiliza por el mismo, considerándose abandonado (Arts. 2528 y 2529 del Código Civil y Comercial de la Nación), habilitando su desarme para cubrir costos de almacenaje. <strong>2.Condiciones Generales y Anulación:</strong> Toda garantía sobre la reparación efectuada quedará automáticamente anulada si el dispositivo presenta signos de mal uso, golpes, caídas, exposición a líquidos/humedad, o si es abierto y manipulado por terceros tras ser retirado del local. <strong>3.Cambios de Módulo (Pantallas):</strong> Cuentan con una garantía estricta de 3 días corridos desde la fecha de entrega. Para que sea válida, es requisito excluyente que el dispositivo no presente ningún daño físico (marcas de presión, rayones, fisuras) y debe conservar intacto el film protector colocado en el local. <strong>4.Pines de Carga:</strong> La reparación o reemplazo cuenta con una garantía máxima de 3 días corridos desde la fecha de entrega. Esta cobertura perderá total validez si el equipo reingresa con el conector físicamente dañado, forzado o arrancado por el uso indebido de cables o cargadores.
+              <strong>Conformidad de Ingreso:</strong> El cliente acepta las presentes condiciones y declara que los accesorios y componentes entregados junto con el equipo son única y exclusivamente los detallados en este documento.</p>
+            </div>
           </div>
-          <p style="font-size: 9px; text-align: justify; margin-top: 10px; color: #000; line-height: 1.15;"><strong>Términos:</strong> Pasados los 90 días corridos de notificada la reparación, si el equipo no es retirado, la empresa no se responsabiliza, considerándose abandonado (Arts. 2528/2529 CCyC), habilitando su desarme para costos de almacenaje. El cliente acepta las condiciones y declara que los accesorios entregados son únicamente los detallados.</p>
-          <div style="margin-top: 100px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
-            <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px">Firma del Cliente</div>
-            <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px">Aclaración / DNI</div>
+          
+          <div style="margin-top: 60px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
+            <div style="width: 45%; border-top: 1px solid #000; padding-top: 3px">Firma del Cliente</div>
+            <div style="width: 45%; border-top: 1px solid #000; padding-top: 3px">Aclaración / DNI</div>
           </div>
         </div>
 
@@ -221,17 +227,15 @@
     </div>
 
     <script>
-      // ⚠️ Asegurate de que esta URL sea la de tu Script de Servicios desplegado
+      // ⚠️ ASEGURATE DE QUE ESTA URL SEA LA DE TU SCRIPT DE SERVICIOS
       const API_URL = "https://script.google.com/macros/s/AKfycbz2OMXdAkea6mMZkq7ieV700Cr0jwMJF2etMToufQ2ZYDBtgbbdQfhwCMwyJECfGuCW/exec";
 
-      // LÓGICA DE SESIÓN Y LOGIN
       function verificarSesion() {
           const usuarioGuardado = localStorage.getItem("usuarioServicios");
           if (usuarioGuardado) {
               document.getElementById("pantallaLogin").style.display = "none";
               document.getElementById("pantallaPrincipal").style.display = "block";
               
-              // Autocompletamos el técnico en los formularios (ahora incluyendo a Alfredo)
               document.getElementById("receptor").value = usuarioGuardado;
               document.getElementById("actTecnico").value = usuarioGuardado;
               
@@ -267,7 +271,6 @@
           location.reload();
       }
 
-      // LÓGICA DEL CANVAS DEL PATRÓN
       const canvas = document.getElementById("patternCanvas");
       const ctx = canvas.getContext("2d");
       const inputClave = document.getElementById("clave");
@@ -307,7 +310,6 @@
       canvas.addEventListener("touchstart", startDraw, { passive: false }); canvas.addEventListener("touchmove", moveDraw, { passive: false }); window.addEventListener("touchend", () => { if (isDrawing) endDraw({ preventDefault: () => {} }); });
       drawPattern();
 
-      // LOGICA DE COTIZADOR DINÁMICO
       function agregarItem() {
         const div = document.createElement("div"); div.className = "row item-cotizacion";
         div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button type="button" class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`;
@@ -326,7 +328,6 @@
         window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
       }
 
-      // COMUNICACIÓN CON APPS SCRIPT
       async function ejecutarAccion(tipo) {
         let btn = null; let textoOriginal = "";
         if (tipo !== "estadisticas") {
@@ -384,7 +385,7 @@
         try {
           const response = await fetch(API_URL, {
             method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" }, // PREVIENE ERRORES DE CORS
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(datos),
           });
           const res = await response.json();
@@ -409,39 +410,32 @@
             document.getElementById("tSena").innerText = datos.sena;
             document.getElementById("tSaldo").innerText = datos.total - datos.sena;
 
-           // 1. FORZAMOS LA URL PÚBLICA DE GITHUB 
-            // ⚠️ ACORDATE DE CAMBIAR TU-USUARIO Y TU-REPO POR TUS DATOS REALES DE GITHUB PAGES
-            // Esta es la carpeta raíz donde están tus archivos del taller
+            // URL DE GITHUB FIJA PARA EL QR
             let urlGithubPages = "https://hernancarrionlcc-a11y.github.io/SERVICIO_TECNICO_FA_/"; 
             let linkParaQR = urlGithubPages + "estados-orden.html?orden=" + res.nroAsignado;
+
             const caja = document.getElementById("mensajeIngreso");
             caja.style.display = "block"; caja.style.background = "#d4edda";
             caja.innerHTML = `✅ ¡Ingresado!<br><span class="nro-destacado">Nº ${res.nroAsignado}</span>`;
 
-            // 2. LE DECIMOS AL SISTEMA QUE ESPERE A DESCARGAR EL QR PARA IMPRIMIR
+            // ESPERAMOS A QUE EL QR CARGUE PARA IMPRIMIR
             let imgQR = document.getElementById("tQR");
             
             imgQR.onload = function() {
-              // Recién cuando el QR se descarga de internet, abrimos la ventana de imprimir
               document.getElementById("ticketImpresion").style.display = "block";
               window.print();
               document.getElementById("ticketImpresion").style.display = "none";
 
-              // Limpiamos el formulario DESPUÉS de imprimir
+              // Limpiamos todo
               document.querySelectorAll('input[type="text"]:not([disabled]), input[type="tel"], textarea').forEach((el) => (el.value = ""));
               document.querySelectorAll(".item-cotizacion").forEach((el, idx) => { if (idx > 0) el.remove(); });
               document.getElementById("presTotal").value = ""; document.getElementById("presSena").value = "0";
               limpiarPatron(); ejecutarAccion("estadisticas");
             };
 
-            // 3. PASAMOS LA URL DEL QR A LA IMAGEN (Esto dispara el onload de arriba)
+            // Dispara el onload
             imgQR.src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + encodeURIComponent(linkParaQR);
 
-            // Limpiar el formulario
-            document.querySelectorAll('input[type="text"]:not([disabled]), input[type="tel"], textarea').forEach((el) => (el.value = ""));
-            document.querySelectorAll(".item-cotizacion").forEach((el, idx) => { if (idx > 0) el.remove(); });
-            document.getElementById("presTotal").value = ""; document.getElementById("presSena").value = "0";
-            limpiarPatron(); ejecutarAccion("estadisticas");
           } else if (tipo === "actualizar") {
             alert(res.mensaje);
             document.getElementById("actNro").value = ""; document.getElementById("actNota").value = "";
@@ -461,9 +455,8 @@
             document.getElementById("tObservaciones").innerText = res.observaciones || "-"; document.getElementById("tDetalle").innerText = res.detalle;
             document.getElementById("tTotal").innerText = res.total; document.getElementById("tSena").innerText = res.sena; document.getElementById("tSaldo").innerText = saldo;
 
-            let rutaActual = window.location.href.split("?")[0].replace("index.html", "");
-            if (!rutaActual.endsWith("/")) rutaActual += "/";
-            let linkParaQR = rutaActual + "estados-orden.html?orden=" + res.nroAsignado;
+            let urlGithubPages = "https://hernancarrionlcc-a11y.github.io/SERVICIO_TECNICO_FA_/"; 
+            let linkParaQR = urlGithubPages + "estados-orden.html?orden=" + res.nroAsignado;
             document.getElementById("tQR").src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + encodeURIComponent(linkParaQR);
 
             caja.innerHTML = `
@@ -495,9 +488,14 @@
       }
 
       function reimprimirTicket() {
-        setTimeout(() => {
-          document.getElementById("ticketImpresion").style.display = "block"; window.print(); document.getElementById("ticketImpresion").style.display = "none";
-        }, 200);
+        let imgQR = document.getElementById("tQR");
+        if(imgQR.complete) {
+            document.getElementById("ticketImpresion").style.display = "block"; window.print(); document.getElementById("ticketImpresion").style.display = "none";
+        } else {
+            imgQR.onload = function() {
+                document.getElementById("ticketImpresion").style.display = "block"; window.print(); document.getElementById("ticketImpresion").style.display = "none";
+            }
+        }
       }
 
       function prepararDuplicado() {
