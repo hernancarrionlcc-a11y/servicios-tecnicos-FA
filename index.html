@@ -409,22 +409,33 @@
             document.getElementById("tSena").innerText = datos.sena;
             document.getElementById("tSaldo").innerText = datos.total - datos.sena;
 
-            // URL DINÁMICA DE GITHUB PARA EL QR
-            let rutaActual = window.location.href.split("?")[0].replace("index.html", "");
-            if (!rutaActual.endsWith("/")) rutaActual += "/";
-            let linkParaQR = rutaActual + "estados-orden.html?orden=" + res.nroAsignado;
-            
-            document.getElementById("tQR").src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + encodeURIComponent(linkParaQR);
-
+           // 1. FORZAMOS LA URL PÚBLICA DE GITHUB 
+            // ⚠️ ACORDATE DE CAMBIAR TU-USUARIO Y TU-REPO POR TUS DATOS REALES DE GITHUB PAGES
+            // Esta es la carpeta raíz donde están tus archivos del taller
+            let urlGithubPages = "https://hernancarrionlcc-a11y.github.io/SERVICIO_TECNICO_FA_/"; 
+            let linkParaQR = urlGithubPages + "estados-orden.html?orden=" + res.nroAsignado;
             const caja = document.getElementById("mensajeIngreso");
             caja.style.display = "block"; caja.style.background = "#d4edda";
             caja.innerHTML = `✅ ¡Ingresado!<br><span class="nro-destacado">Nº ${res.nroAsignado}</span>`;
 
-            setTimeout(() => {
+            // 2. LE DECIMOS AL SISTEMA QUE ESPERE A DESCARGAR EL QR PARA IMPRIMIR
+            let imgQR = document.getElementById("tQR");
+            
+            imgQR.onload = function() {
+              // Recién cuando el QR se descarga de internet, abrimos la ventana de imprimir
               document.getElementById("ticketImpresion").style.display = "block";
               window.print();
               document.getElementById("ticketImpresion").style.display = "none";
-            }, 500);
+
+              // Limpiamos el formulario DESPUÉS de imprimir
+              document.querySelectorAll('input[type="text"]:not([disabled]), input[type="tel"], textarea').forEach((el) => (el.value = ""));
+              document.querySelectorAll(".item-cotizacion").forEach((el, idx) => { if (idx > 0) el.remove(); });
+              document.getElementById("presTotal").value = ""; document.getElementById("presSena").value = "0";
+              limpiarPatron(); ejecutarAccion("estadisticas");
+            };
+
+            // 3. PASAMOS LA URL DEL QR A LA IMAGEN (Esto dispara el onload de arriba)
+            imgQR.src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + encodeURIComponent(linkParaQR);
 
             // Limpiar el formulario
             document.querySelectorAll('input[type="text"]:not([disabled]), input[type="tel"], textarea').forEach((el) => (el.value = ""));
