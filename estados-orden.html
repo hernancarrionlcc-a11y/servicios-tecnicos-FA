@@ -1,200 +1,365 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Estado de Orden - FA Insumos & Servicios</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="icon" type="image/png" href="LOGO-FA.png">
-    
-    <meta name="theme-color" content="#121212">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="icon" type="image/png" href="LOGO-FA.png" />
+    <meta name="theme-color" content="#121212" />
 
     <style>
-        :root {
-            --bg-color: #121212; --panel-bg: #1e1e1e; --text-color: #e0e0e0;
-            --tech-blue: #03a9f4;
-            
-            /* Colores exactos para los 6 estados */
-            --st-pendiente: #9e9e9e; 
-            --st-revision: #ffeb3b; 
-            --st-confirmacion: #9c27b0; 
-            --st-repuesto: #ff9800; 
-            --st-reparado: #4caf50; 
-            --st-entregado: #607d8b; 
-        }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; }
-        .header-logo { text-align: center; margin-bottom: 30px; }
-        .header-logo img { height: 70px; border-radius: 8px; margin-bottom: 10px;}
-        .header-logo h2 { margin: 0; color: var(--tech-blue); letter-spacing: 1px; font-size: 1.5em;}
-        .card { background-color: var(--panel-bg); padding: 30px 20px; border-radius: 15px; width: 100%; max-width: 400px; box-sizing: border-box; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-top: 5px solid var(--tech-blue); }
-        .loading { font-size: 1.2em; color: #aaa; }
-        .status-icon { font-size: 4em; margin-bottom: 15px; }
-        
-        .client-name { font-size: 1.5em; margin: 0 0 5px 0; font-weight: bold; }
-        .device-info { font-size: 1.1em; color: var(--tech-blue); margin: 0 0 20px 0; font-weight: bold;}
-        
-        .data-box { background: #2c2c2c; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .data-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 5px;}
-        .data-item:last-child { border-bottom: none; padding-bottom: 0;}
-        .data-label { font-size: 0.9em; color: #888; text-transform: uppercase; }
-        .data-value { font-size: 1em; font-weight: bold; text-align: right;}
-        
-        .motivational-msg { font-style: italic; color: #ccc; line-height: 1.5; background: rgba(3, 169, 244, 0.1); padding: 15px; border-radius: 8px;}
-        
-        #resultContainer { display: none; }
-        #errorContainer { display: none; color: #f44336; }
-    </style>
-</head>
-<body>
+      :root {
+        --bg-color: #121212;
+        --panel-bg: #1e1e1e;
+        --text-color: #e0e0e0;
+        --tech-blue: #03a9f4;
+        --st-pendiente: #9e9e9e;
+        --st-revision: #ffeb3b;
+        --st-confirmacion: #9c27b0;
+        --st-repuesto: #ff9800;
+        --st-reparado: #4caf50;
+        --st-entregado: #607d8b;
+      }
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 90vh;
+      }
+      .header-logo {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .header-logo img {
+        height: 70px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+      }
+      .header-logo h2 {
+        margin: 0;
+        color: var(--tech-blue);
+        letter-spacing: 1px;
+        font-size: 1.5em;
+      }
+      .card {
+        background-color: var(--panel-bg);
+        padding: 30px 20px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border-top: 5px solid var(--tech-blue);
+      }
+      .loading {
+        font-size: 1.2em;
+        color: #aaa;
+      }
+      .status-icon {
+        font-size: 4em;
+        margin-bottom: 15px;
+      }
 
+      .client-name {
+        font-size: 1.5em;
+        margin: 0 0 5px 0;
+        font-weight: bold;
+      }
+      .device-info {
+        font-size: 1.1em;
+        color: var(--tech-blue);
+        margin: 0 0 20px 0;
+        font-weight: bold;
+      }
+
+      .data-box {
+        background: #2c2c2c;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #333;
+        padding-bottom: 5px;
+      }
+      .data-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .data-label {
+        font-size: 0.9em;
+        color: #888;
+        text-transform: uppercase;
+      }
+      .data-value {
+        font-size: 1em;
+        font-weight: bold;
+        text-align: right;
+      }
+
+      .motivational-msg {
+        font-style: italic;
+        color: #ccc;
+        line-height: 1.5;
+        background: rgba(3, 169, 244, 0.1);
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      #resultContainer {
+        display: none;
+      }
+      #errorContainer {
+        display: none;
+        color: #f44336;
+      }
+    </style>
+  </head>
+  <body>
     <div class="header-logo">
-        <img src="LOGO-FA.png" alt="FA Insumos Logo" onerror="this.style.display='none'; document.getElementById('altIcon').style.display='inline-block';">
-        <i id="altIcon" class="fa-solid fa-microchip fa-4x" style="color: var(--tech-blue); display: none;"></i>
-        <h2>FA Insumos & Servicios</h2>
-        <p style="color: #888; margin: 5px 0 0 0; font-size: 0.9em;">Seguimiento de Reparación</p>
+      <img
+        src="LOGO-FA.png"
+        alt="FA Insumos Logo"
+        onerror="
+          this.style.display = 'none';
+          document.getElementById('altIcon').style.display = 'inline-block';
+        "
+      />
+      <i
+        id="altIcon"
+        class="fa-solid fa-microchip fa-4x"
+        style="color: var(--tech-blue); display: none"
+      ></i>
+      <h2>FA Insumos & Servicios</h2>
+      <p style="color: #888; margin: 5px 0 0 0; font-size: 0.9em">
+        Seguimiento de Reparación
+      </p>
     </div>
 
     <div class="card" id="mainCard">
-        <div id="loadingContainer" class="loading">
-            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
-            <p>Buscando orden...</p>
+      <div id="loadingContainer" class="loading">
+        <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+        <p>Buscando orden...</p>
+      </div>
+
+      <div id="errorContainer">
+        <i
+          class="fa-solid fa-circle-xmark fa-4x"
+          style="margin-bottom: 15px"
+        ></i>
+        <h3>Orden no encontrada.</h3>
+        <p>Verificá el número de comprobante o comunicate con el local.</p>
+      </div>
+
+      <div id="resultContainer">
+        <div id="iconStatus" class="status-icon"></div>
+
+        <h1 class="client-name" id="cName">Cargando...</h1>
+        <p class="device-info" id="cDevice">Cargando equipo...</p>
+
+        <div class="data-box">
+          <div class="data-item">
+            <span class="data-label">Orden N°</span>
+            <span class="data-value" id="cOrder">--</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Estado</span>
+            <span
+              class="data-value"
+              id="cStatusText"
+              style="text-transform: uppercase"
+              >--</span
+            >
+          </div>
+          <div
+            class="data-item"
+            style="flex-direction: column; align-items: flex-start; gap: 5px"
+          >
+            <span class="data-label">Accesorios entregados</span>
+            <span
+              class="data-value"
+              id="cAccesorios"
+              style="
+                font-size: 0.9em;
+                text-align: left;
+                font-weight: normal;
+                color: #bbb;
+              "
+              >--</span
+            >
+          </div>
+          <div
+            class="data-item"
+            id="saldoContainer"
+            style="
+              display: none;
+              border-top: 1px solid #333;
+              padding-top: 10px;
+              margin-top: 5px;
+            "
+          >
+            <span class="data-label">Saldo a Pagar</span>
+            <span class="data-value" id="cSaldo" style="font-size: 1.2em"
+              >--</span
+            >
+          </div>
         </div>
 
-        <div id="errorContainer">
-            <i class="fa-solid fa-circle-xmark fa-4x" style="margin-bottom: 15px;"></i>
-            <h3>Orden no encontrada.</h3>
-            <p>Verificá el número de comprobante o comunicate con el local.</p>
-        </div>
-
-        <div id="resultContainer">
-            <div id="iconStatus" class="status-icon"></div>
-            
-            <h1 class="client-name" id="cName">Cargando...</h1>
-            <p class="device-info" id="cDevice">Cargando equipo...</p>
-            
-            <div class="data-box">
-                <div class="data-item">
-                    <span class="data-label">Orden N°</span>
-                    <span class="data-value" id="cOrder">--</span>
-                </div>
-                <div class="data-item">
-                    <span class="data-label">Estado</span>
-                    <span class="data-value" id="cStatusText" style="text-transform: uppercase;">--</span>
-                </div>
-            </div>
-
-            <p class="motivational-msg" id="cMsg">...</p>
-        </div>
+        <p class="motivational-msg" id="cMsg">...</p>
+      </div>
     </div>
 
     <script>
-        // EL MISMO SCRIPT DE TU PANEL DE FA
-        const URL_API = "https://script.google.com/macros/s/AKfycbx205tJR-sW11Z1gzkwu1Ln_vcZSAmqstEwfMKteXAeTf35nHsOncciqOEqtLEAu-01/exec"; 
+      // ⚠️ ASEGURATE DE PONER LA URL CORRECTA DE TU SCRIPT DE SERVICIOS ACÁ
+      const URL_API =
+        "https://script.google.com/macros/s/AKfycbx205tJR-sW11Z1gzkwu1Ln_vcZSAmqstEwfMKteXAeTf35nHsOncciqOEqtLEAu-01/exec";
 
-        function applyStatusStyles(estadoTexto) {
-            const iconStatus = document.getElementById('iconStatus');
-            const mainCard = document.getElementById('mainCard');
-            const msgElement = document.getElementById('cMsg');
-            const statusTextElement = document.getElementById('cStatusText');
+      function applyStatusStyles(estadoTexto) {
+        const iconStatus = document.getElementById("iconStatus");
+        const mainCard = document.getElementById("mainCard");
+        const msgElement = document.getElementById("cMsg");
+        const statusTextElement = document.getElementById("cStatusText");
 
-            statusTextElement.innerText = estadoTexto;
+        statusTextElement.innerText = estadoTexto;
 
-            switch(estadoTexto) {
-                case 'Pendiente de Ingreso':
-                    iconStatus.innerHTML = '<i class="fa-solid fa-box-open"></i>';
-                    iconStatus.style.color = 'var(--st-pendiente)';
-                    mainCard.style.borderTopColor = 'var(--st-pendiente)';
-                    statusTextElement.style.color = 'var(--st-pendiente)';
-                    msgElement.innerHTML = "Estamos esperando recibir tu equipo en el mostrador para ingresarlo al taller.";
-                    break;
-                case 'En revision':
-                    iconStatus.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i>';
-                    iconStatus.style.color = 'var(--st-revision)';
-                    mainCard.style.borderTopColor = 'var(--st-revision)';
-                    statusTextElement.style.color = 'var(--st-revision)';
-                    msgElement.innerHTML = "Nuestros técnicos están diagnosticando tu equipo. Pronto te informaremos las novedades.";
-                    break;
-                case 'Esperando Confirmacion':
-                    iconStatus.innerHTML = '<i class="fa-solid fa-comment-dots"></i>';
-                    iconStatus.style.color = 'var(--st-confirmacion)';
-                    mainCard.style.borderTopColor = 'var(--st-confirmacion)';
-                    statusTextElement.style.color = 'var(--st-confirmacion)';
-                    msgElement.innerHTML = "Te hemos enviado un presupuesto. Estamos esperando tu confirmación para avanzar.";
-                    break;
-                case 'Esperando Repuesto':
-                    iconStatus.innerHTML = '<i class="fa-solid fa-truck-fast"></i>';
-                    iconStatus.style.color = 'var(--st-repuesto)';
-                    mainCard.style.borderTopColor = 'var(--st-repuesto)';
-                    statusTextElement.style.color = 'var(--st-repuesto)';
-                    msgElement.innerHTML = "Ya solicitamos el repuesto necesario. Apenas ingrese, retomamos la reparación.";
-                    break;
-                case 'Reparado/Listo para retirar':
-                    iconStatus.innerHTML = '<i class="fa-solid fa-check-double"></i>';
-                    iconStatus.style.color = 'var(--st-reparado)';
-                    mainCard.style.borderTopColor = 'var(--st-reparado)';
-                    statusTextElement.style.color = 'var(--st-reparado)';
-                    msgElement.innerHTML = "¡Tu equipo está listo y funcionando! Ya podés pasar por el local a retirarlo.";
-                    break;
-                case 'Entregado':
-                    iconStatus.innerHTML = '<i class="fa-solid fa-handshake"></i>';
-                    iconStatus.style.color = 'var(--st-entregado)';
-                    mainCard.style.borderTopColor = 'var(--st-entregado)';
-                    statusTextElement.style.color = 'var(--st-entregado)';
-                    msgElement.innerHTML = "Equipo entregado. ¡Muchas gracias por confiar en FA Insumos & Servicios!";
-                    break;
-                default:
-                    iconStatus.innerHTML = '<i class="fa-solid fa-laptop-medical"></i>';
-                    iconStatus.style.color = 'var(--tech-blue)';
-                    mainCard.style.borderTopColor = 'var(--tech-blue)';
-                    msgElement.innerHTML = "Tu equipo está registrado en nuestro sistema.";
-            }
+        switch (estadoTexto) {
+          case "Pendiente de Ingreso":
+            iconStatus.innerHTML = '<i class="fa-solid fa-box-open"></i>';
+            iconStatus.style.color = "var(--st-pendiente)";
+            mainCard.style.borderTopColor = "var(--st-pendiente)";
+            statusTextElement.style.color = "var(--st-pendiente)";
+            msgElement.innerHTML =
+              "Estamos esperando recibir tu equipo en el mostrador para ingresarlo al taller.";
+            break;
+          case "En revision":
+            iconStatus.innerHTML =
+              '<i class="fa-solid fa-magnifying-glass-chart"></i>';
+            iconStatus.style.color = "var(--st-revision)";
+            mainCard.style.borderTopColor = "var(--st-revision)";
+            statusTextElement.style.color = "var(--st-revision)";
+            msgElement.innerHTML =
+              "Nuestros técnicos están diagnosticando tu equipo. Pronto te informaremos las novedades.";
+            break;
+          case "Esperando Confirmacion":
+            iconStatus.innerHTML = '<i class="fa-solid fa-comment-dots"></i>';
+            iconStatus.style.color = "var(--st-confirmacion)";
+            mainCard.style.borderTopColor = "var(--st-confirmacion)";
+            statusTextElement.style.color = "var(--st-confirmacion)";
+            msgElement.innerHTML =
+              "Te hemos enviado un presupuesto. Estamos esperando tu confirmación para avanzar.";
+            break;
+          case "Esperando Repuesto":
+            iconStatus.innerHTML = '<i class="fa-solid fa-truck-fast"></i>';
+            iconStatus.style.color = "var(--st-repuesto)";
+            mainCard.style.borderTopColor = "var(--st-repuesto)";
+            statusTextElement.style.color = "var(--st-repuesto)";
+            msgElement.innerHTML =
+              "Ya solicitamos el repuesto necesario. Apenas ingrese, retomamos la reparación.";
+            break;
+          case "Reparado/Listo para retirar":
+            iconStatus.innerHTML = '<i class="fa-solid fa-check-double"></i>';
+            iconStatus.style.color = "var(--st-reparado)";
+            mainCard.style.borderTopColor = "var(--st-reparado)";
+            statusTextElement.style.color = "var(--st-reparado)";
+            msgElement.innerHTML =
+              "¡Tu equipo está listo y funcionando! Ya podés pasar por el local a retirarlo.";
+            break;
+          case "Entregado":
+            iconStatus.innerHTML = '<i class="fa-solid fa-handshake"></i>';
+            iconStatus.style.color = "var(--st-entregado)";
+            mainCard.style.borderTopColor = "var(--st-entregado)";
+            statusTextElement.style.color = "var(--st-entregado)";
+            msgElement.innerHTML =
+              "Equipo entregado. ¡Muchas gracias por confiar en FA Insumos & Servicios!";
+            break;
+          default:
+            iconStatus.innerHTML = '<i class="fa-solid fa-laptop-medical"></i>';
+            iconStatus.style.color = "var(--tech-blue)";
+            mainCard.style.borderTopColor = "var(--tech-blue)";
+            msgElement.innerHTML =
+              "Tu equipo está registrado en nuestro sistema.";
+        }
+      }
+
+      async function fetchOrderData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ordenId = urlParams.get("orden");
+
+        if (!ordenId) {
+          showError();
+          return;
         }
 
-        async function fetchOrderData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const ordenId = urlParams.get('orden');
+        try {
+          const response = await fetch(URL_API, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" }, // CORRECCIÓN CLAVE PARA EVITAR BLOQUEO CORS EN MÓVILES
+            body: JSON.stringify({ accion: "consultar", id: ordenId }),
+          });
 
-            if (!ordenId) {
-                showError();
-                return;
+          const res = await response.json();
+
+          if (res.error) {
+            showError();
+          } else {
+            document.getElementById("loadingContainer").style.display = "none";
+            document.getElementById("resultContainer").style.display = "block";
+            document.getElementById("cOrder").innerText = res.nroAsignado;
+            document.getElementById("cName").innerText = res.cliente;
+            document.getElementById("cDevice").innerText = res.equipo;
+            document.getElementById("cAccesorios").innerText =
+              res.accesorios || "Sin accesorios registrados";
+
+            applyStatusStyles(res.estado);
+
+            let total = parseFloat(res.total) || 0;
+            let sena = parseFloat(res.sena) || 0;
+            let saldo = total - sena;
+            let saldoElement = document.getElementById("cSaldo");
+            document.getElementById("saldoContainer").style.display = "flex";
+
+            if (total > 0) {
+              saldoElement.innerText = "$ " + saldo;
+              saldoElement.style.color = "var(--st-reparado)";
+            } else {
+              saldoElement.innerText = "A cotizar";
+              saldoElement.style.color = "var(--st-repuesto)";
             }
-
-            try {
-                // Hacemos una consulta a tu mismo Apps Script para traer la data real de la orden
-                const response = await fetch(URL_API, {
-                    method: 'POST',
-                    body: JSON.stringify({ accion: 'consultar', id: ordenId })
-                });
-                
-                const res = await response.json();
-                
-                if (res.error) {
-                    showError();
-                } else {
-                    document.getElementById('loadingContainer').style.display = 'none';
-                    document.getElementById('resultContainer').style.display = 'block';
-
-                    document.getElementById('cOrder').innerText = res.nroAsignado;
-                    document.getElementById('cName').innerText = res.cliente;
-                    document.getElementById('cDevice').innerText = res.equipo;
-                    
-                    applyStatusStyles(res.estado);
-                }
-            } catch (error) {
-                console.error("Error consultando API:", error);
-                showError();
-            }
+          }
+        } catch (error) {
+          console.error("Error consultando API:", error);
+          showError();
         }
+      }
 
-        function showError() {
-            document.getElementById('loadingContainer').style.display = 'none';
-            document.getElementById('errorContainer').style.display = 'block';
-            document.getElementById('mainCard').style.borderTopColor = '#f44336';
-        }
+      function showError() {
+        document.getElementById("loadingContainer").style.display = "none";
+        document.getElementById("errorContainer").style.display = "block";
+        document.getElementById("mainCard").style.borderTopColor = "#f44336";
+      }
 
-        window.onload = fetchOrderData;
+      window.onload = fetchOrderData;
     </script>
-</body>
+  </body>
 </html>
