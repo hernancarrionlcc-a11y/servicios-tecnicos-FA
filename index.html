@@ -126,9 +126,11 @@
         <div class="card" style="background: #2c3e50; color: white">
           <h2 style="color: white; border-bottom-color: #3498db; margin-bottom: 5px">📊 Estado del Taller</h2>
           <div class="dash-grid">
+            <div class="dash-item" style="border-left-color: #3498db"><small>Recibidos</small><strong id="dashRecibido">...</strong></div>
             <div class="dash-item" style="border-left-color: #e67e22"><small>En Revisión</small><strong id="dashRevision">...</strong></div>
-            <div class="dash-item" style="border-left-color: #f1c40f"><small>Esperando Repuesto</small><strong id="dashEsperando">...</strong></div>
-            <div class="dash-item" style="border-left-color: #27ae60"><small>Listos para Entregar</small><strong id="dashReparados">...</strong></div>
+            <div class="dash-item" style="border-left-color: #9b59b6"><small>Esp. Confirmación</small><strong id="dashEsperandoConf">...</strong></div>
+            <div class="dash-item" style="border-left-color: #f1c40f"><small>Esp. Repuesto</small><strong id="dashEsperandoRep">...</strong></div>
+            <div class="dash-item" style="border-left-color: #27ae60"><small>Reparados</small><strong id="dashReparados">...</strong></div>
             <div class="dash-item" style="border-left-color: #95a5a6"><small>Entregados</small><strong id="dashEntregados">...</strong></div>
           </div>
           <button onclick="ejecutarAccion('estadisticas')" style="background: #3498db; padding: 10px; margin-top: 10px; font-size: 14px;">🔄 Refrescar Panel</button>
@@ -215,6 +217,38 @@
         </div>
 
         <div class="card">
+          <h2>✏️ Editar Presupuesto y Datos</h2>
+          <div class="row">
+            <input type="text" id="editNro" class="col" placeholder="Nro Reparación *" required />
+            <button id="btnCargarEdit" class="col btn-search" style="margin-top: 5px" onclick="cargarParaEditar()">Cargar Datos</button>
+          </div>
+          
+          <div id="formEdicion" style="display: none; margin-top: 15px;">
+            <label>Accesorios de la Orden</label>
+            <div class="row">
+              <div class="col"><small>Cargador</small><select id="editCableCorriente"><option value="NO">NO</option><option value="SI">SÍ</option></select></div>
+              <div class="col"><small>Cable USB</small><select id="editCableDatos"><option value="NO">NO</option><option value="SI">SÍ</option></select></div>
+            </div>
+            <input type="text" id="editOtroAccesorio" placeholder="Otros (Funda, cartuchos...)" style="margin-top: 5px;" />
+            
+            <label>Observaciones</label>
+            <textarea id="editObservaciones"></textarea>
+            
+            <label style="color: #8e44ad; border-top: 1px solid #ccc; padding-top: 15px; margin-top: 15px;">💰 Presupuesto / Tareas</label>
+            <div id="editContenedorItems">
+               </div>
+            <button type="button" class="btn-add" onclick="agregarItemEdit()">+ Añadir otro ítem</button>
+            
+            <div class="row" style="margin-top: 15px;">
+              <div class="col"><label>Total ($)</label><input type="number" id="editTotal" readonly style="background: #eee; font-weight: bold" /></div>
+              <div class="col"><label>Seña ($)</label><input type="number" id="editSena" onkeyup="calcularTotalEdit()" /></div>
+            </div>
+            
+            <button id="btnGuardarEdicion" class="btn-update" onclick="ejecutarAccion('guardar_edicion')">Guardar Cambios</button>
+          </div>
+        </div>
+
+        <div class="card">
           <h2>🔍 Consultar Servicio</h2>
           <div class="row">
             <input type="text" id="consNro" class="col" placeholder="Nro de Reparación o Nombre" />
@@ -227,7 +261,6 @@
     </div>
 
     <script>
-      // ⚠️ ASEGURATE DE QUE ESTA URL SEA LA DE TU SCRIPT DE SERVICIOS
       const API_URL = "https://script.google.com/macros/s/AKfycbz2OMXdAkea6mMZkq7ieV700Cr0jwMJF2etMToufQ2ZYDBtgbbdQfhwCMwyJECfGuCW/exec";
 
       function verificarSesion() {
@@ -315,10 +348,19 @@
         div.innerHTML = `<input type="text" class="col desc" placeholder="Detalle"><input type="number" class="col precio" placeholder="Precio ($)" onkeyup="calcularTotal()"><button type="button" class="btn-del" onclick="this.parentElement.remove(); calcularTotal()">X</button>`;
         document.getElementById("contenedorItems").appendChild(div);
       }
-      
       function calcularTotal() {
-        let total = 0; document.querySelectorAll(".precio").forEach((input) => { total += parseFloat(input.value) || 0; });
+        let total = 0; document.querySelectorAll(".item-cotizacion .precio").forEach((input) => { total += parseFloat(input.value) || 0; });
         document.getElementById("presTotal").value = total;
+      }
+
+      function agregarItemEdit(desc = "", prec = "") {
+        const div = document.createElement("div"); div.className = "row item-edit-cotizacion";
+        div.innerHTML = `<input type="text" class="col desc-edit" placeholder="Detalle" value="${desc}"><input type="number" class="col precio-edit" placeholder="Precio ($)" value="${prec}" onkeyup="calcularTotalEdit()"><button type="button" class="btn-del" onclick="this.parentElement.remove(); calcularTotalEdit()">X</button>`;
+        document.getElementById("editContenedorItems").appendChild(div);
+      }
+      function calcularTotalEdit() {
+        let total = 0; document.querySelectorAll(".item-edit-cotizacion .precio-edit").forEach((input) => { total += parseFloat(input.value) || 0; });
+        document.getElementById("editTotal").value = total;
       }
 
       function abrirWhatsApp(telefono, cliente, equipo, estado, saldo) {
@@ -328,10 +370,84 @@
         window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
       }
 
+      async function cargarParaEditar() {
+        let nro = document.getElementById("editNro").value.trim();
+        if (!nro) return alert("Ingresá un Nro de orden.");
+        
+        let btn = document.getElementById("btnCargarEdit");
+        let originalText = btn.innerText;
+        btn.innerText = "Cargando..."; btn.disabled = true;
+
+        try {
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ accion: "consultar", id: nro })
+          });
+          const res = await response.json();
+          
+          if (res.error) {
+            alert(res.error);
+            document.getElementById("formEdicion").style.display = "none";
+          } else {
+            document.getElementById("formEdicion").style.display = "block";
+            
+            let accStr = res.accesorios || "";
+            let editCorriente = "NO", editDatos = "NO", editOtros = "";
+            
+            if(accStr.includes("Cargador: SÍ") || accStr.includes("Cargador: SI")) editCorriente = "SI";
+            if(accStr.includes("USB: SÍ") || accStr.includes("USB: SI")) editDatos = "SI";
+            
+            let matchOtros = accStr.match(/Otros:\s*(.*)/);
+            if(matchOtros && matchOtros[1] && matchOtros[1] !== "Ninguno" && matchOtros[1] !== "undefined") {
+               editOtros = matchOtros[1];
+            }
+            
+            document.getElementById("editCableCorriente").value = editCorriente;
+            document.getElementById("editCableDatos").value = editDatos;
+            document.getElementById("editOtroAccesorio").value = editOtros;
+            
+            document.getElementById("editObservaciones").value = res.observaciones || "";
+            document.getElementById("editSena").value = res.sena || 0;
+            
+            document.getElementById("editContenedorItems").innerHTML = ""; 
+            let detalleStr = res.detalle || "";
+            let itemsAgregados = 0;
+            
+            if (detalleStr && detalleStr !== "Sin cotizar") {
+                let lineas = detalleStr.split('\n');
+                lineas.forEach(linea => {
+                    let trimLinea = linea.trim();
+                    if(trimLinea.startsWith("-")) {
+                        let partes = trimLinea.match(/-\s+(.*?):\s+\$(\d+(\.\d+)?)/);
+                        if(partes && partes.length >= 3) {
+                            agregarItemEdit(partes[1], partes[2]);
+                            itemsAgregados++;
+                        } else {
+                            agregarItemEdit(trimLinea.replace(/^- /, ''), "");
+                            itemsAgregados++;
+                        }
+                    }
+                });
+            }
+            if(itemsAgregados === 0) {
+                agregarItemEdit("", "");
+            }
+            
+            document.getElementById("editTotal").value = res.total || 0;
+            calcularTotalEdit(); 
+          }
+        } catch (error) {
+          alert("Error de conexión al cargar datos.");
+        } finally {
+          btn.innerText = originalText; btn.disabled = false;
+        }
+      }
+
       async function ejecutarAccion(tipo) {
         let btn = null; let textoOriginal = "";
         if (tipo !== "estadisticas") {
-          let idBoton = tipo === "ingresar" ? "btnIngresar" : tipo === "actualizar" ? "btnActualizar" : "btnConsultar";
+          let idBoton = tipo === "ingresar" ? "btnIngresar" : tipo === "actualizar" ? "btnActualizar" : tipo === "consultar" ? "btnConsultar" : "btnGuardarEdicion";
           btn = document.getElementById(idBoton); textoOriginal = btn.innerText; btn.disabled = true; btn.innerText = "Procesando...";
         }
 
@@ -364,6 +480,7 @@
             if (desc && prec) detalleStr += `- ${desc}: $${prec}\n`;
           });
           datos.detalle = detalleStr || "Sin cotizar";
+          
         } else if (tipo === "actualizar") {
           datos.id = document.getElementById("actNro").value.trim();
           datos.estado = document.getElementById("actEstado").value;
@@ -374,12 +491,38 @@
             alert("⚠️ Ingresá el Nro de reparación y el Técnico a cargo.");
             if (btn) { btn.disabled = false; btn.innerText = textoOriginal; } return;
           }
+          
         } else if (tipo === "consultar") {
           datos.id = document.getElementById("consNro").value;
           if (!datos.id) {
             alert("Ingresá un Nro de orden o nombre.");
             if (btn) { btn.disabled = false; btn.innerText = textoOriginal; } return;
           }
+          
+        } else if (tipo === "guardar_edicion") {
+          datos.id = document.getElementById("editNro").value.trim();
+          if (!datos.id) {
+            alert("⚠️ Falta el número de reparación.");
+            if (btn) { btn.disabled = false; btn.innerText = textoOriginal; } return;
+          }
+          
+          let cCorriente = document.getElementById("editCableCorriente").value;
+          let cDatos = document.getElementById("editCableDatos").value;
+          let cOtros = document.getElementById("editOtroAccesorio").value || "Ninguno";
+          
+          datos.accesorios = `Cargador: ${cCorriente} | USB: ${cDatos} | Otros: ${cOtros}`;
+          datos.observaciones = document.getElementById("editObservaciones").value.trim();
+          
+          let detalleEditStr = "";
+          document.querySelectorAll(".item-edit-cotizacion").forEach((item) => {
+            let desc = item.querySelector(".desc-edit").value; 
+            let prec = item.querySelector(".precio-edit").value;
+            if (desc && prec) detalleEditStr += `- ${desc}: $${prec}\n`;
+          });
+          
+          datos.detalle = detalleEditStr || "Sin cotizar";
+          datos.total = document.getElementById("editTotal").value || 0;
+          datos.sena = document.getElementById("editSena").value || 0;
         }
 
         try {
@@ -393,8 +536,11 @@
           if (res.error) {
             if (tipo !== "estadisticas") alert(res.error);
           } else if (tipo === "estadisticas") {
+            // ASÍ SE CARGAN LOS 6 ESTADOS EN LOS CUADROS
+            document.getElementById("dashRecibido").innerText = res.recibido;
             document.getElementById("dashRevision").innerText = res.enRevision;
-            document.getElementById("dashEsperando").innerText = res.esperando;
+            document.getElementById("dashEsperandoConf").innerText = res.esperandoConf;
+            document.getElementById("dashEsperandoRep").innerText = res.esperandoRep;
             document.getElementById("dashReparados").innerText = res.reparados;
             document.getElementById("dashEntregados").innerText = res.entregados;
           } else if (tipo === "ingresar") {
@@ -410,7 +556,6 @@
             document.getElementById("tSena").innerText = datos.sena;
             document.getElementById("tSaldo").innerText = datos.total - datos.sena;
 
-            // URL DE GITHUB FIJA PARA EL QR
             let urlGithubPages = "https://hernancarrionlcc-a11y.github.io/SERVICIO_TECNICO_FA_/"; 
             let linkParaQR = urlGithubPages + "estados-orden.html?orden=" + res.nroAsignado;
 
@@ -418,7 +563,6 @@
             caja.style.display = "block"; caja.style.background = "#d4edda";
             caja.innerHTML = `✅ ¡Ingresado!<br><span class="nro-destacado">Nº ${res.nroAsignado}</span>`;
 
-            // ESPERAMOS A QUE EL QR CARGUE PARA IMPRIMIR
             let imgQR = document.getElementById("tQR");
             
             imgQR.onload = function() {
@@ -426,19 +570,21 @@
               window.print();
               document.getElementById("ticketImpresion").style.display = "none";
 
-              // Limpiamos todo
               document.querySelectorAll('input[type="text"]:not([disabled]), input[type="tel"], textarea').forEach((el) => (el.value = ""));
               document.querySelectorAll(".item-cotizacion").forEach((el, idx) => { if (idx > 0) el.remove(); });
               document.getElementById("presTotal").value = ""; document.getElementById("presSena").value = "0";
               limpiarPatron(); ejecutarAccion("estadisticas");
             };
-
-            // Dispara el onload
             imgQR.src = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + encodeURIComponent(linkParaQR);
 
           } else if (tipo === "actualizar") {
             alert(res.mensaje);
             document.getElementById("actNro").value = ""; document.getElementById("actNota").value = "";
+            ejecutarAccion("estadisticas");
+          } else if (tipo === "guardar_edicion") {
+            alert(res.mensaje || "✅ Orden actualizada correctamente.");
+            document.getElementById("editNro").value = "";
+            document.getElementById("formEdicion").style.display = "none";
             ejecutarAccion("estadisticas");
           } else if (tipo === "consultar") {
             const caja = document.getElementById("mensajeConsulta");
