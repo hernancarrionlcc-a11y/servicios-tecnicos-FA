@@ -661,8 +661,12 @@
             document.getElementById("tFecha").innerText = fechaMostrada; document.getElementById("tNro").innerText = res.nroAsignado;
             document.getElementById("tCliente").innerText = res.cliente; document.getElementById("tReceptor").innerText = res.receptor || "-";
             document.getElementById("tTelefono").innerText = res.telefono || "-";
-            document.getElementById("tEquipo").innerText = res.equipo; document.getElementById("tFalla").innerText = res.falla; document.getElementById("tClave/Patron").innerText = clave;
-            document.getElementById("tObservaciones").innerText = res.observaciones || "-"; document.getElementById("tDetalle").innerText = res.detalle;
+            document.getElementById("tEquipo").innerText = res.equipo; document.getElementById("tFalla").innerText = res.falla;
+
+ document.getElementById("tEquipo").innerText = res.equipo; document.getElementById("tClave_Patron").innerText = res.clave;
+
+
+document.getElementById("tObservaciones").innerText = res.observaciones || "-"; document.getElementById("tDetalle").innerText = res.detalle;
             document.getElementById("tTotal").innerText = res.total; document.getElementById("tSena").innerText = res.sena; document.getElementById("tSaldo").innerText = saldo;
 
             let urlGithubPages = "https://hernancarrionlcc-a11y.github.io/SERVICIO_TECNICO_FA_/"; 
