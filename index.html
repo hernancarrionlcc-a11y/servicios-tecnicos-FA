@@ -93,6 +93,7 @@
           <p style="margin: 3px 0"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 16px; font-weight: bold"></span></p>
           <p style="margin: 3px 0"><strong>Recibido por:</strong> <span id="tReceptor"></span></p>
           <p style="margin: 3px 0"><strong>Cliente:</strong> <span id="tCliente"></span></p>
+          <p style="margin: 3px 0"><strong>Teléfono:</strong> <span id="tTelefono"></span></p>
           <p style="margin: 3px 0"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
           <p style="margin: 3px 0"><strong>Falla:</strong> <span id="tFalla"></span></p>
           <p style="margin: 3px 0"><strong>Observaciones:</strong> <span id="tObservaciones"></span></p>
@@ -255,6 +256,21 @@
             <button id="btnConsultar" class="col btn-search" style="margin-top: 5px" onclick="ejecutarAccion('consultar')">Buscar</button>
           </div>
           <div id="mensajeConsulta" class="status-box"></div>
+        </div>
+
+        <div class="card">
+          <h2>📋 Equipos por Estado</h2>
+          <div class="row">
+            <select id="filtroEstado" class="col">
+              <option value="Recibido">Recibido</option>
+              <option value="En revision">En revisión</option>
+              <option value="Esperando Confirmacion">Esperando Confirmación</option>
+              <option value="Esperando Repuesto">Esperando Repuesto</option>
+              <option value="Reparado/Listo para retirar">Reparado / Listo para retirar</option>
+            </select>
+            <button class="col btn-search" style="margin-top: 5px" onclick="listarPorEstado()">Filtrar Lista</button>
+          </div>
+          <div id="listaEstados" style="margin-top: 15px;"></div>
         </div>
         
         <button onclick="cerrarSesion()" style="background: #e74c3c; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px;">Cerrar Sesión Taller</button>
@@ -444,6 +460,51 @@
         }
       }
 
+      // NUEVA FUNCIÓN PARA LISTAR POR ESTADO
+      async function listarPorEstado() {
+        let estado = document.getElementById("filtroEstado").value;
+        let contenedor = document.getElementById("listaEstados");
+        contenedor.innerHTML = "<p style='text-align:center;'>Cargando lista...</p>";
+        
+        try {
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ accion: "listar_por_estado", estado: estado })
+          });
+          const res = await response.json();
+          
+          if (res.error) {
+            contenedor.innerHTML = `<span style="color:red">${res.error}</span>`;
+            return;
+          }
+          
+          if (!res.lista || res.lista.length === 0) {
+            contenedor.innerHTML = "<div class='status-box' style='display:block;'>No hay equipos en este estado actualmente.</div>";
+            return;
+          }
+
+          let html = "";
+          res.lista.forEach(orden => {
+            html += `
+            <div style="background:#f8f9fa; border-left: 4px solid #3498db; padding: 10px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="color:#2c3e50; font-size:16px;">Nº ${orden.nroAsignado}</strong> - ${orden.cliente}<br>
+                  <small style="color:#7f8c8d;">${orden.equipo}</small>
+                </div>
+                <button style="background: #34495e; color: white; margin: 0; padding: 8px 12px; width: auto; font-size: 12px;" 
+                  onclick="document.getElementById('consNro').value='${orden.nroAsignado}'; ejecutarAccion('consultar'); window.scrollTo(0, document.body.scrollHeight);">
+                  Ver
+                </button>
+            </div>`;
+          });
+          contenedor.innerHTML = html;
+          
+        } catch (error) {
+          contenedor.innerHTML = '<span style="color:red">Error de conexión al obtener la lista.</span>';
+        }
+      }
+
       async function ejecutarAccion(tipo) {
         let btn = null; let textoOriginal = "";
         if (tipo !== "estadisticas") {
@@ -548,6 +609,7 @@
             document.getElementById("tNro").innerText = res.nroAsignado;
             document.getElementById("tReceptor").innerText = datos.receptor;
             document.getElementById("tCliente").innerText = datos.cliente;
+            document.getElementById("tTelefono").innerText = datos.telefono;
             document.getElementById("tEquipo").innerText = datos.tipoEquipo + " " + datos.modelo;
             document.getElementById("tFalla").innerText = datos.falla;
             document.getElementById("tObservaciones").innerText = datos.observaciones || "-";
@@ -597,6 +659,7 @@
 
             document.getElementById("tFecha").innerText = fechaMostrada; document.getElementById("tNro").innerText = res.nroAsignado;
             document.getElementById("tCliente").innerText = res.cliente; document.getElementById("tReceptor").innerText = res.receptor || "-";
+            document.getElementById("tTelefono").innerText = res.telefono || "-";
             document.getElementById("tEquipo").innerText = res.equipo; document.getElementById("tFalla").innerText = res.falla;
             document.getElementById("tObservaciones").innerText = res.observaciones || "-"; document.getElementById("tDetalle").innerText = res.detalle;
             document.getElementById("tTotal").innerText = res.total; document.getElementById("tSena").innerText = res.sena; document.getElementById("tSaldo").innerText = saldo;
