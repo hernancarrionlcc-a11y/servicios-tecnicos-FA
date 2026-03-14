@@ -96,7 +96,7 @@
           <p style="margin: 3px 0"><strong>Teléfono:</strong> <span id="tTelefono"></span></p>
           <p style="margin: 3px 0"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
           <p style="margin: 3px 0"><strong>Falla:</strong> <span id="tFalla"></span></p>
-          <p style="margin: 3px 0"><strong>Clave/Patron:</strong> <span id="tClave"></span></p>
+          <p style="margin: 3px 0"><strong>Clave/Patrón:</strong> <span id="tClave"></span></p>
           <p style="margin: 3px 0"><strong>Observaciones:</strong> <span id="tObservaciones"></span></p>
           <hr style="border: none; border-top: 1px solid #000; margin: 8px 0" />
           <p style="margin: 3px 0"><strong>Presupuesto / Tareas:</strong><br /><pre id="tDetalle" style="font-family: sans-serif; font-size: 12px; margin: 3px 0; white-space: pre-wrap;"></pre></p>
@@ -117,9 +117,18 @@
             </div>
           </div>
           
-          <div style="margin-top: 60px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
-            <div style="width: 45%; border-top: 1px solid #000; padding-top: 3px">Firma del Cliente</div>
+          <div style="margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
+            <div style="width: 45%; border-top: 1px solid #000; padding-top: 3px">Firma del Cliente (Ingreso)</div>
             <div style="width: 45%; border-top: 1px solid #000; padding-top: 3px">Aclaración / DNI</div>
+          </div>
+
+          <div style="margin-top: 15px; border-top: 1px dashed #000; padding-top: 10px;">
+            <p style="margin: 0 0 25px 0; font-weight: bold; font-size: 12px; text-align: center; color: #000;">ENTREGA DE EQUIPO</p>
+            <div style="display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
+              <div style="width: 25%; border-top: 1px solid #000; padding-top: 3px">Fecha</div>
+              <div style="width: 32%; border-top: 1px solid #000; padding-top: 3px">Firma</div>
+              <div style="width: 32%; border-top: 1px solid #000; padding-top: 3px">Aclaración</div>
+            </div>
           </div>
         </div>
 
@@ -461,7 +470,6 @@
         }
       }
 
-      // NUEVA FUNCIÓN PARA LISTAR POR ESTADO
       async function listarPorEstado() {
         let estado = document.getElementById("filtroEstado").value;
         let contenedor = document.getElementById("listaEstados");
@@ -598,7 +606,6 @@
           if (res.error) {
             if (tipo !== "estadisticas") alert(res.error);
           } else if (tipo === "estadisticas") {
-            // ASÍ SE CARGAN LOS 6 ESTADOS EN LOS CUADROS
             document.getElementById("dashRecibido").innerText = res.recibido;
             document.getElementById("dashRevision").innerText = res.enRevision;
             document.getElementById("dashEsperandoConf").innerText = res.esperandoConf;
@@ -613,6 +620,7 @@
             document.getElementById("tTelefono").innerText = datos.telefono;
             document.getElementById("tEquipo").innerText = datos.tipoEquipo + " " + datos.modelo;
             document.getElementById("tFalla").innerText = datos.falla;
+            document.getElementById("tClave").innerText = datos.clave;
             document.getElementById("tObservaciones").innerText = datos.observaciones || "-";
             document.getElementById("tDetalle").innerText = datos.detalle;
             document.getElementById("tTotal").innerText = datos.total;
@@ -658,16 +666,19 @@
 
             let fechaMostrada = res.fecha && res.fecha.includes("T") ? new Date(res.fecha).toLocaleDateString("es-AR") : res.fecha;
 
-            document.getElementById("tFecha").innerText = fechaMostrada; document.getElementById("tNro").innerText = res.nroAsignado;
-            document.getElementById("tCliente").innerText = res.cliente; document.getElementById("tReceptor").innerText = res.receptor || "-";
+            document.getElementById("tFecha").innerText = fechaMostrada; 
+            document.getElementById("tNro").innerText = res.nroAsignado;
+            document.getElementById("tCliente").innerText = res.cliente; 
+            document.getElementById("tReceptor").innerText = res.receptor || "-";
             document.getElementById("tTelefono").innerText = res.telefono || "-";
-            document.getElementById("tEquipo").innerText = res.equipo; document.getElementById("tFalla").innerText = res.falla;
-
- document.getElementById("tEquipo").innerText = res.equipo; document.getElementById("tClave_Patron").innerText = res.clave;
-
-
-document.getElementById("tObservaciones").innerText = res.observaciones || "-"; document.getElementById("tDetalle").innerText = res.detalle;
-            document.getElementById("tTotal").innerText = res.total; document.getElementById("tSena").innerText = res.sena; document.getElementById("tSaldo").innerText = saldo;
+            document.getElementById("tEquipo").innerText = res.equipo; 
+            document.getElementById("tFalla").innerText = res.falla;
+            document.getElementById("tClave").innerText = res.clave || "Ninguna";
+            document.getElementById("tObservaciones").innerText = res.observaciones || "-"; 
+            document.getElementById("tDetalle").innerText = res.detalle;
+            document.getElementById("tTotal").innerText = res.total; 
+            document.getElementById("tSena").innerText = res.sena; 
+            document.getElementById("tSaldo").innerText = saldo;
 
             let urlGithubPages = "https://hernancarrionlcc-a11y.github.io/SERVICIO_TECNICO_FA_/"; 
             let linkParaQR = urlGithubPages + "estados-orden.html?orden=" + res.nroAsignado;
