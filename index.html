@@ -54,17 +54,13 @@
       canvas { background: white; border-radius: 10px; touch-action: none; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); cursor: crosshair; }
       .btn-clear-pattern { background: #e74c3c; padding: 8px; font-size: 14px; margin-top: 10px; width: auto; display: inline-block; }
 
-     @media print {
-        /* Se cambia de A6 a A5 portrait (vertical) */
+      @media print {
         @page { size: A5 portrait; margin: 0; }
-        
         body { margin: 0; padding: 0; background: white; }
         .card, button, input, select, textarea, .pattern-container, #pantallaLogin, header { display: none !important; }
         
-        /* Ajusté ligeramente el padding (de 8mm a 10mm) y el tamaño de fuente general (de 12px a 14px) 
-           para aprovechar mejor el espacio extra que ofrece la hoja A5 */
-        #ticketImpresion { display: block !important; width: 100%; padding: 10mm; box-sizing: border-box; font-family: sans-serif; font-size: 14px; background: white; page-break-after: always; break-after: page; }
-        #ticketDuplicadoInterno { display: block !important; width: 100%; padding: 10mm; box-sizing: border-box; font-family: sans-serif; font-size: 14px; background: white; }
+        #ticketImpresion { display: block !important; width: 100%; padding: 5mm; box-sizing: border-box; font-family: sans-serif; font-size: 12px; background: white; page-break-after: always; break-after: page; }
+        #ticketDuplicadoInterno { display: block !important; width: 100%; padding: 5mm; box-sizing: border-box; font-family: sans-serif; font-size: 12px; background: white; }
       }
     </style>
 </head>
@@ -87,51 +83,55 @@
     <div id="pantallaPrincipal" style="display: none;">
 
         <div id="ticketImpresion" style="display: none">
-          <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 8px;">
-            <img src="LOGO-FA.png?v=5" style="max-width: 140px; margin: 0 auto 2px auto; display: block" />
-            <p style="margin: 0px 0; font-size: 11px; color: #000">📞 WhatsApp: 264-567-4349</p>
-            <p style="margin: 2px 0; font-size: 11px; color: #000">📍 Ignacio de la Roza 110 (S), Albardón, San Juan, Argentina</p>
-            <p style="margin: 6px 0 3px 0; font-weight: bold; font-size: 14px; text-transform: uppercase; color: #000;">Comprobante de Ingreso</p>
-          </div>
-          <p style="margin: 3px 0"><strong>Fecha:</strong> <span id="tFecha"></span></p>
-          <p style="margin: 3px 0"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 16px; font-weight: bold"></span></p>
-          <p style="margin: 3px 0"><strong>Recibido por:</strong> <span id="tReceptor"></span></p>
-          <p style="margin: 3px 0"><strong>Cliente:</strong> <span id="tCliente"></span></p>
-          <p style="margin: 3px 0"><strong>Teléfono:</strong> <span id="tTelefono"></span></p>
-          <p style="margin: 3px 0"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
-          <p style="margin: 3px 0"><strong>Falla:</strong> <span id="tFalla"></span></p>
-          <p style="margin: 3px 0"><strong>Clave/Patrón:</strong> <span id="tClave"></span></p>
-          <p style="margin: 3px 0"><strong>Observaciones:</strong> <span id="tObservaciones"></span></p>
-          <hr style="border: none; border-top: 1px solid #000; margin: 8px 0" />
-          <p style="margin: 3px 0"><strong>Presupuesto / Tareas:</strong><br /><pre id="tDetalle" style="font-family: sans-serif; font-size: 12px; margin: 3px 0; white-space: pre-wrap;"></pre></p>
-          <div style="border-top: 1px solid #000; padding-top: 5px; margin-top: 8px">
-            <p style="margin: 3px 0"><strong>Total:</strong> $<span id="tTotal"></span></p>
-            <p style="margin: 3px 0"><strong>Seña:</strong> $<span id="tSena"></span></p>
-            <p style="margin: 3px 0; font-weight: bold; font-size: 14px"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
+          <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 3px; margin-bottom: 5px;">
+            <img src="LOGO-FA.png?v=5" style="max-width: 120px; margin: 0 auto 2px auto; display: block" />
+            <p style="margin: 0; font-size: 10px; color: #000">📞 WhatsApp: 264-567-4349</p>
+            <p style="margin: 1px 0; font-size: 10px; color: #000">📍 Ignacio de la Roza 110 (S), Albardón, San Juan</p>
+            <p style="margin: 4px 0 2px 0; font-weight: bold; font-size: 13px; text-transform: uppercase; color: #000;">Comprobante de Ingreso</p>
           </div>
           
-          <div style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0; gap: 10px;">
-            <div style="flex: 0 0 70px; text-align: center;">
-              <img id="tQR" src="" style="width: 65px; height: 65px; margin: 0 auto; display: block" />
-              <p style="font-size: 7px; color: #000; margin: 2px 0 0 0">Escaneá para estado</p>
+          <div style="font-size: 12px;">
+              <p style="margin: 1px 0"><strong>Fecha:</strong> <span id="tFecha"></span></p>
+              <p style="margin: 1px 0"><strong>Orden Nº:</strong> <span id="tNro" style="font-size: 14px; font-weight: bold"></span></p>
+              <p style="margin: 1px 0"><strong>Recibido por:</strong> <span id="tReceptor"></span></p>
+              <p style="margin: 1px 0"><strong>Cliente:</strong> <span id="tCliente"></span></p>
+              <p style="margin: 1px 0"><strong>Teléfono:</strong> <span id="tTelefono"></span></p>
+              <p style="margin: 1px 0"><strong>Equipo:</strong> <span id="tEquipo"></span></p>
+              <p style="margin: 1px 0"><strong>Falla:</strong> <span id="tFalla"></span></p>
+              <p style="margin: 1px 0"><strong>Clave/Patrón:</strong> <span id="tClave"></span></p>
+              <p style="margin: 1px 0"><strong>Observaciones:</strong> <span id="tObservaciones"></span></p>
+          </div>
+          
+          <hr style="border: none; border-top: 1px solid #000; margin: 5px 0" />
+          <p style="margin: 1px 0; font-size: 12px;"><strong>Presupuesto / Tareas:</strong><br /><pre id="tDetalle" style="font-family: sans-serif; font-size: 11px; margin: 2px 0; white-space: pre-wrap;"></pre></p>
+          
+          <div style="border-top: 1px solid #000; padding-top: 3px; margin-top: 5px; font-size: 12px;">
+            <p style="margin: 1px 0"><strong>Total:</strong> $<span id="tTotal"></span></p>
+            <p style="margin: 1px 0"><strong>Seña:</strong> $<span id="tSena"></span></p>
+            <p style="margin: 1px 0; font-weight: bold; font-size: 13px"><strong>Saldo a Pagar:</strong> $<span id="tSaldo"></span></p>
+          </div>
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; margin: 5px 0; gap: 8px;">
+            <div style="flex: 0 0 60px; text-align: center;">
+              <img id="tQR" src="" style="width: 55px; height: 55px; margin: 0 auto; display: block" />
+              <p style="font-size: 6px; color: #000; margin: 2px 0 0 0">Escaneá el estado</p>
             </div>
             <div style="flex: 1;">
-              <p style="font-size: 8px; text-align: justify; margin: 0; color: #000; line-height: 1.1;"><strong>Términos y Condiciones:</strong> <strong>1.Plazos de Retiro y Abandono:</strong> Pasados los 90 días corridos de notificada la reparación o el presupuesto, si el equipo no es retirado, la empresa no se responsabiliza por el mismo, considerándose abandonado (Arts. 2528 y 2529 del Código Civil y Comercial de la Nación), habilitando su desarme para cubrir costos de almacenaje. <strong>2.Condiciones Generales y Anulación:</strong> Toda garantía sobre la reparación efectuada quedará automáticamente anulada si el dispositivo presenta signos de mal uso, golpes, caídas, exposición a líquidos/humedad, o si es abierto y manipulado por terceros tras ser retirado del local. <strong>3.Cambios de Módulo (Pantallas):</strong> Cuentan con una garantía estricta de 3 días corridos desde la fecha de entrega. Para que sea válida, es requisito excluyente que el dispositivo no presente ningún daño físico (marcas de presión, rayones, fisuras) y debe conservar intacto el film protector colocado en el local. <strong>4.Pines de Carga:</strong> La reparación o reemplazo cuenta con una garantía máxima de 3 días corridos desde la fecha de entrega. Esta cobertura perderá total validez si el equipo reingresa con el conector físicamente dañado, forzado o arrancado por el uso indebido de cables o cargadores.
-              <strong>Conformidad de Ingreso:</strong> El cliente acepta las presentes condiciones y declara que los accesorios y componentes entregados junto con el equipo son única y exclusivamente los detallados en este documento.</p>
+              <p style="font-size: 7px; text-align: justify; margin: 0; color: #000; line-height: 1;"><strong>Términos:</strong> <strong>1.Abandono:</strong> Pasados 90 días de notificada la reparación, la empresa no se responsabiliza, considerándose abandonado (Arts. 2528/29 CCC), habilitando desarme. <strong>2.Garantía:</strong> Queda anulada si presenta mal uso, golpes, humedad, o es abierto por terceros. <strong>3.Módulos:</strong> Garantía de 3 días. Requisito: sin daño físico y con film protector intacto. <strong>4.Pines de Carga:</strong> Garantía de 3 días. Pierde validez si reingresa forzado o arrancado. <strong>Conformidad:</strong> El cliente acepta estas condiciones y declara que los componentes entregados son única y exclusivamente los detallados aquí.</p>
             </div>
           </div>
           
-          <div style="margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
-            <div style="width: 45%; border-top: 1px solid #000; padding-top: 3px">Firma del Cliente (Ingreso)</div>
-            <div style="width: 45%; border-top: 1px solid #000; padding-top: 3px">Aclaración / DNI</div>
+          <div style="margin-top: 20px; display: flex; justify-content: space-between; text-align: center; font-size: 10px; color: #000;">
+            <div style="width: 45%; border-top: 1px solid #000; padding-top: 2px">Firma del Cliente (Ingreso)</div>
+            <div style="width: 45%; border-top: 1px solid #000; padding-top: 2px">Aclaración / DNI</div>
           </div>
 
-          <div style="margin-top: 15px; border-top: 1px dashed #000; padding-top: 10px;">
-            <p style="margin: 0 0 25px 0; font-weight: bold; font-size: 12px; text-align: center; color: #000;">ENTREGA DE EQUIPO</p>
-            <div style="display: flex; justify-content: space-between; text-align: center; font-size: 11px; color: #000;">
-              <div style="width: 25%; border-top: 1px solid #000; padding-top: 3px">Fecha</div>
-              <div style="width: 32%; border-top: 1px solid #000; padding-top: 3px">Firma</div>
-              <div style="width: 32%; border-top: 1px solid #000; padding-top: 3px">Aclaración</div>
+          <div style="margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px;">
+            <p style="margin: 0 0 15px 0; font-weight: bold; font-size: 11px; text-align: center; color: #000;">ENTREGA DE EQUIPO</p>
+            <div style="display: flex; justify-content: space-between; text-align: center; font-size: 10px; color: #000;">
+              <div style="width: 25%; border-top: 1px solid #000; padding-top: 2px">Fecha</div>
+              <div style="width: 32%; border-top: 1px solid #000; padding-top: 2px">Firma</div>
+              <div style="width: 32%; border-top: 1px solid #000; padding-top: 2px">Aclaración</div>
             </div>
           </div>
         </div>
@@ -227,7 +227,16 @@
             <option value="Reparado/Listo para retirar">Reparado / Listo para retirar</option>
             <option value="Entregado">Entregado</option>
           </select>
-          <textarea id="actNota" placeholder="Agregar nota detallada (solo visible en taller)..."></textarea>
+          
+          <div style="background: #f4f6f7; padding: 10px; border-radius: 5px; margin-top: 10px; border-left: 3px solid #8e44ad;">
+            <label style="margin-top: 0; color: #8e44ad; font-size: 12px;">💰 Adjuntar Cotización (Opcional)</label>
+            <div class="row" style="margin-top: 5px;">
+              <input type="text" id="actDetalleCotizacion" class="col" placeholder="Detalle (Ej: Cambio Módulo)" style="flex: 2;" />
+              <input type="number" id="actTotalCotizacion" class="col" placeholder="Total ($)" />
+            </div>
+          </div>
+
+          <textarea id="actNota" placeholder="Agregar nota detallada (solo visible en taller)..." style="margin-top: 10px;"></textarea>
           <button id="btnActualizar" class="btn-update" onclick="ejecutarAccion('actualizar')">Guardar Avance</button>
         </div>
 
@@ -250,8 +259,7 @@
             <textarea id="editObservaciones"></textarea>
             
             <label style="color: #8e44ad; border-top: 1px solid #ccc; padding-top: 15px; margin-top: 15px;">💰 Presupuesto / Tareas</label>
-            <div id="editContenedorItems">
-               </div>
+            <div id="editContenedorItems"></div>
             <button type="button" class="btn-add" onclick="agregarItemEdit()">+ Añadir otro ítem</button>
             
             <div class="row" style="margin-top: 15px;">
@@ -291,6 +299,7 @@
     </div>
 
     <script>
+      // ATENCIÓN HERNÁN: Verificá que esta URL sea la correcta de tu Google Apps Script de "Servicio Técnico"
       const API_URL = "https://script.google.com/macros/s/AKfycbz2OMXdAkea6mMZkq7ieV700Cr0jwMJF2etMToufQ2ZYDBtgbbdQfhwCMwyJECfGuCW/exec";
 
       function verificarSesion() {
@@ -561,6 +570,10 @@
           datos.nota = document.getElementById("actNota").value.trim();
           datos.tecnico = document.getElementById("actTecnico").value.trim();
 
+          // DATOS DE COTIZACIÓN RÁPIDA
+          datos.nuevoDetalle = document.getElementById("actDetalleCotizacion").value.trim();
+          datos.nuevoTotal = document.getElementById("actTotalCotizacion").value.trim();
+
           if (!datos.id || !datos.tecnico) {
             alert("⚠️ Ingresá el Nro de reparación y el Técnico a cargo.");
             if (btn) { btn.disabled = false; btn.innerText = textoOriginal; } return;
@@ -654,7 +667,10 @@
 
           } else if (tipo === "actualizar") {
             alert(res.mensaje);
-            document.getElementById("actNro").value = ""; document.getElementById("actNota").value = "";
+            document.getElementById("actNro").value = ""; 
+            document.getElementById("actNota").value = "";
+            document.getElementById("actDetalleCotizacion").value = "";
+            document.getElementById("actTotalCotizacion").value = "";
             ejecutarAccion("estadisticas");
           } else if (tipo === "guardar_edicion") {
             alert(res.mensaje || "✅ Orden actualizada correctamente.");
