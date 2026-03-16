@@ -54,13 +54,17 @@
       canvas { background: white; border-radius: 10px; touch-action: none; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); cursor: crosshair; }
       .btn-clear-pattern { background: #e74c3c; padding: 8px; font-size: 14px; margin-top: 10px; width: auto; display: inline-block; }
 
-      @media print {
-        @page { size: A6 portrait; margin: 0; }
+     @media print {
+        /* Se cambia de A6 a A5 portrait (vertical) */
+        @page { size: A5 portrait; margin: 0; }
+        
         body { margin: 0; padding: 0; background: white; }
         .card, button, input, select, textarea, .pattern-container, #pantallaLogin, header { display: none !important; }
         
-        #ticketImpresion { display: block !important; width: 100%; padding: 8mm; box-sizing: border-box; font-family: sans-serif; font-size: 12px; background: white; page-break-after: always; break-after: page; }
-        #ticketDuplicadoInterno { display: block !important; width: 100%; padding: 8mm; box-sizing: border-box; font-family: sans-serif; font-size: 12px; background: white; }
+        /* Ajusté ligeramente el padding (de 8mm a 10mm) y el tamaño de fuente general (de 12px a 14px) 
+           para aprovechar mejor el espacio extra que ofrece la hoja A5 */
+        #ticketImpresion { display: block !important; width: 100%; padding: 10mm; box-sizing: border-box; font-family: sans-serif; font-size: 14px; background: white; page-break-after: always; break-after: page; }
+        #ticketDuplicadoInterno { display: block !important; width: 100%; padding: 10mm; box-sizing: border-box; font-family: sans-serif; font-size: 14px; background: white; }
       }
     </style>
 </head>
